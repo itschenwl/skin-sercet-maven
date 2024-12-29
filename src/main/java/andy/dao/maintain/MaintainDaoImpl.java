@@ -35,6 +35,28 @@ public class MaintainDaoImpl implements MaintainDao {
 		// 設定預編譯敘述⻑度上限
 		ds.addDataSourceProperty("prepStmtCacheSqlLimit", 2048);
 	}
+
+	@Override
+	public Maintain getLast() {
+		String sql = "SELECT * FROM remind ORDER BY REMI_ID DESC LIMIT 1";
+		try (Connection conn = ds.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql);) {
+			try (ResultSet rs = pstmt.executeQuery();) {
+				if (rs.next()) {
+					Maintain maintain = new Maintain();
+					maintain.setId(rs.getInt("REMI_ID"));
+					maintain.setUserId(rs.getString("USER_NO"));
+					maintain.setTitle(rs.getString("CONTENT"));
+					maintain.setInterval(rs.getLong("HOUR_INTER"));
+					maintain.setReminder(rs.getTimestamp("REMI_DATE"));
+					return maintain;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	@Override
 	public Maintain selectById(Integer id) {
@@ -135,4 +157,5 @@ public class MaintainDaoImpl implements MaintainDao {
 		}
 		return null;
 	}
+
 }
