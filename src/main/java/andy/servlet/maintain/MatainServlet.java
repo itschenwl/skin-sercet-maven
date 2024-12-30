@@ -44,7 +44,8 @@ public class MatainServlet extends HttpServlet {
 		// 新增
 		req.setCharacterEncoding("UTF-8");
 		Maintain maintain = gson.fromJson(req.getReader(), Maintain.class);
-		maintaionDaoImpl.insert(maintain);
+		int response = maintaionDaoImpl.insert(maintain);
+		resp.getWriter().write(gson.toJson(response));
 	}
 	
 	@Override
@@ -52,15 +53,18 @@ public class MatainServlet extends HttpServlet {
 		// 修改
 		req.setCharacterEncoding("UTF-8");
 		Maintain maintain = gson.fromJson(req.getReader(), Maintain.class);
-		maintaionDaoImpl.update(maintain);
+		int response = maintaionDaoImpl.update(maintain);
+		resp.getWriter().write(gson.toJson(response));
 	}
 	
 	@Override
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 刪除
+		int response = -1;
 		String id = req.getParameter("id");
 		if (id != null && !id.isEmpty()) {
-			maintaionDaoImpl.deleteById(Integer.parseInt(id));
+			response = maintaionDaoImpl.deleteById(Integer.parseInt(id));
 		}
+		resp.getWriter().write(gson.toJson(response));
 	}
 }

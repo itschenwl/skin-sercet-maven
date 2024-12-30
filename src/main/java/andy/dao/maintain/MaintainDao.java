@@ -6,6 +6,7 @@ import andy.javabean.maintain.Maintain;
 
 public interface MaintainDao {
 
+	Maintain getLast();
 	Maintain selectById(Integer id);
 	int insert(Maintain maintain);
 	int deleteById(Integer id);
