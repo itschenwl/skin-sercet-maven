@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context docBase="SkinSercet" path="/SkinSercet"
+	reloadable="true">
+	
+	<Resource name="jdbc/skin-sercet-maven" 
+		auth="Container"
+		type="javax.sql.DataSource" 
+		driverClassName="com.mysql.cj.jdbc.Driver"
+		url="jdbc:mysql://localhost:3306/Group%202?useUnicode=yes&amp;characterEncoding=utf8&amp;useSSL=true&amp;serverTimezone=Asia/Taipei" 
+		username="root"
+		password="12345678" 
+		maxTotal="20" 
+		maxIdle="10" 
+		maxWaitMillis="5000"/>
+</Context>
+	<!-- 如果執行產生"Public key retrieval is not allowed" 要將連線url的useSSL改為true -->
+
+	<!-- 
+		auth 為認證方式，一般為Container
+		maxTotal 連線池的最大連線數，預設為8
+		maxIdle 連線池最多可空閒的連線數，預設為8
+		maxWaitMillis 連線池中連線用完時，新請求的等待時間，單位毫秒，超過此時間會拋出列外。預設為-1 (無限時間)
+	 -->

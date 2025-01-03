@@ -2,6 +2,7 @@ package andy.javabean.maintain;
 
 import java.sql.Timestamp;
 
+// 保養通知
 public class Maintain {
 	private Integer id;
 	private String userId;
