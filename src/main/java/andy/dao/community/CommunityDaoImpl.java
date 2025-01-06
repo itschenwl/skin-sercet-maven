@@ -114,9 +114,10 @@ public class CommunityDaoImpl implements CommunityDao {
 
 	@Override
 	public List<CommunityArticle> findAll(String userId) throws SQLException {
-		String sql = "select CA.*, (CASE WHEN M.USER_NO = ? THEN true ELSE false END) as isCollection ," +
+		String sql = "select CA.*, (CASE WHEN M.USER_NO IS NOT NULL THEN true ELSE false END) as isCollection ," +
 				" (select COUNT(*) from COMM_COMM AS CC where CC.COMM_ARTI_NO = CA.COMM_ARTI_NO) as commcount" +
-				" from " + CommunityArticle.TABLE_NAME + " as CA left join MFCOMA as M on CA.COMM_ARTI_NO = M.COMM_ARTI_NO;";
+				" from " + CommunityArticle.TABLE_NAME + " as CA left join " +
+				" (select * from MFCOMA where USER_NO = ?) as M on CA.COMM_ARTI_NO = M.COMM_ARTI_NO;";
 		List<CommunityArticle> items = new ArrayList<CommunityArticle>();
 		try (
 				Connection connection = dataSource.getConnection();
