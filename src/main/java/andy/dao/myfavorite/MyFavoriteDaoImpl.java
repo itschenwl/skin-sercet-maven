@@ -50,8 +50,10 @@ public class MyFavoriteDaoImpl implements MyFavoriteDao {
 
 	@Override
 	public List<Activity> findActivities(String userId) throws SQLException {
-		String sql = "select (select COUNT(*) from ACTI_COMM AS AC where ACTI_NO = A.ACTI_NO) as commcount ," +
-					" A.* from MFACT as M join ACTI as A where M.ACTI_NO = A.ACTI_NO AND M.USER_NO = ?;";
+		String sql = "select (select COUNT(*) from ACTI_COMM AS AC where ACTI_NO = A.ACTI_NO) as commcount ,"
+				+ " A.*"
+				+ " from MFACT as M join ACTI as A"
+				+ " where M.ACTI_NO = A.ACTI_NO AND M.USER_NO = ?;";
 		List<Activity> items = new ArrayList<Activity>();
 		try (
 				Connection connection = dataSource.getConnection();
