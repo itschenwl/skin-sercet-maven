@@ -60,6 +60,7 @@ public class MyFavoriteService {
                     .build();
 		} catch (Exception e) {
 			// 處理執行錯誤
+			System.out.println("error: " + e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new Result(0, e.getMessage()))
                     .build();
@@ -82,6 +83,7 @@ public class MyFavoriteService {
                     .build();
 		} catch (Exception e) {
 			// 處理執行錯誤
+			System.out.println("error: " + e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new Result(0, e.getMessage()))
                     .build();
@@ -104,6 +106,7 @@ public class MyFavoriteService {
 	                .build();
 		} catch (Exception e) {
 			// 處理執行錯誤
+			System.out.println("error: " + e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new Result(0, e.getMessage()))
                     .build();
@@ -134,6 +137,7 @@ public class MyFavoriteService {
                     .build();
 		} catch (Exception e) {
 			// 處理執行錯誤
+			System.out.println("error: " + e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new Result(0, e.getMessage()))
                     .build();
@@ -156,6 +160,7 @@ public class MyFavoriteService {
                     .build();
 		} catch (Exception e) {
 			// 處理執行錯誤
+			System.out.println("error: " + e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new Result(0, e.getMessage()))
                     .build();
@@ -178,6 +183,7 @@ public class MyFavoriteService {
 	                .build();
 		} catch (Exception e) {
 			// 處理執行錯誤
+			System.out.println("error: " + e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new Result(0, e.getMessage()))
                     .build();
@@ -208,6 +214,7 @@ public class MyFavoriteService {
                     .build();
 		} catch (Exception e) {
 			// 處理執行錯誤
+			System.out.println("error: " + e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new Result(0, e.getMessage()))
                     .build();
@@ -230,6 +237,7 @@ public class MyFavoriteService {
                     .build();
 		} catch (Exception e) {
 			// 處理執行錯誤
+			System.out.println("error: " + e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new Result(0, e.getMessage()))
                     .build();
@@ -252,6 +260,7 @@ public class MyFavoriteService {
 	                .build();
 		} catch (Exception e) {
 			// 處理執行錯誤
+			System.out.println("error: " + e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new Result(0, e.getMessage()))
                     .build();
@@ -282,6 +291,7 @@ public class MyFavoriteService {
                     .build();
 		} catch (Exception e) {
 			// 處理執行錯誤
+			System.out.println("error: " + e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new Result(0, e.getMessage()))
                     .build();
@@ -304,6 +314,7 @@ public class MyFavoriteService {
                     .build();
 		} catch (Exception e) {
 			// 處理執行錯誤
+			System.out.println("error: " + e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new Result(0, e.getMessage()))
                     .build();
@@ -326,6 +337,7 @@ public class MyFavoriteService {
 	                .build();
 		} catch (Exception e) {
 			// 處理執行錯誤
+			System.out.println("error: " + e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new Result(0, e.getMessage()))
                     .build();

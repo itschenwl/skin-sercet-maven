@@ -16,7 +16,7 @@ public class CommunityComment {
 	public static final String REP_CON = "REP_CON";		//	官方回覆內容	LONGTEXT
 	
 	private int id;
-	private int commArtiId;
+	private int comArtId;
 	private String userId;
 	private Comment comment;
 }
