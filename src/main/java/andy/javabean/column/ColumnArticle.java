@@ -15,7 +15,7 @@ public class ColumnArticle {
 	public static final String COLU_ARTI_DATE = "COLU_ARTI_DATE";		//	發表日期	DATETIME
 	
 	private int id;
-	private int artiColID;
+	private int artColId;
 	private String userId;
 	private Article article;
 	private Boolean isFavorite;        // 是否喜歡

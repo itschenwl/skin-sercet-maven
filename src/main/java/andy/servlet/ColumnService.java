@@ -103,7 +103,7 @@ public class ColumnService {
 	@Path("/comment")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON) // 輸出資料轉成JSON
-	// 取得此活動的所有意見內容
+	// 取得此專欄的所有意見內容
 	public Response findAllComment(@QueryParam("artId") Integer artId) {
 		try {
 			List<ColumnComment> items = columnDaoImpl.findAllComment(artId);
@@ -117,6 +117,7 @@ public class ColumnService {
 			return Response.ok(gson.toJson(items)).build();
 		} catch (Exception e) {
 			// 處理執行錯誤
+			System.out.println("error: " + e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new Result(0, e.getMessage()))
                     .build();
@@ -140,6 +141,7 @@ public class ColumnService {
 			return Response.ok(gson.toJson(items)).build();
 		} catch (Exception e) {
 			// 處理執行錯誤
+			System.out.println("error: " + e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new Result(0, e.getMessage()))
                     .build();

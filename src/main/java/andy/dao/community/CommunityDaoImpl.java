@@ -35,7 +35,7 @@ public class CommunityDaoImpl implements CommunityDao {
 			") values(?, ?, ?, ?, ?, ?);";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
-			ps.setInt(1, item.getCommArtiId());
+			ps.setInt(1, item.getComArtId());
 			ps.setString(2, item.getUserId());
 			Comment comment = item.getComment();
 			Message message = comment.getComment();
@@ -57,7 +57,7 @@ public class CommunityDaoImpl implements CommunityDao {
 				" where " + CommunityComment.COMM_COMM_NO + " = ?;";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
-			ps.setInt(1, item.getCommArtiId());
+			ps.setInt(1, item.getComArtId());
 			ps.setString(2, item.getUserId());
 			Comment comment = item.getComment();
 			Message message = comment.getComment();
@@ -94,7 +94,7 @@ public class CommunityDaoImpl implements CommunityDao {
 			while (rs.next()) {
 				CommunityComment item = new CommunityComment();
 				item.setId(rs.getInt(CommunityComment.COMM_COMM_NO));
-				item.setCommArtiId(rs.getInt(CommunityComment.COMM_ARTI_NO));
+				item.setComArtId(rs.getInt(CommunityComment.COMM_ARTI_NO));
 				item.setUserId(rs.getString(CommunityComment.USER_NO));
 				Comment comment = new Comment();
 				Message message = new Message();
