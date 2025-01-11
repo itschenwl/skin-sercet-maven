@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import andy.javabean.MediaData;
 import lombok.Data;
 
 @Data
@@ -13,7 +14,7 @@ public class User {
 	public static final String USER_PASSWORD = "USER_PASSWORD";
 	public static final String FULL_NAME = "FULL_NAME";
 	public static final String NICK_NAME = "NICK_NAME";
-	public static final String TELL_NUMBER = "TELL_NUMBER";
+	public static final String TEL_NUMBER = "TEL_NUMBER";
 	public static final String BIRTHDAY = "BIRTHDAY";
 	public static final String SEX = "SEX";
 	public static final String MEM_LEVEL = "MEM_LEVEL";
@@ -21,8 +22,9 @@ public class User {
 	public static final String IG = "IG";
 	public static final String STATE = "STATE";
 	public static final String PASS = "PASS";
-	//public static final String PERSONAL_INFO = "PERSONAL_INFO";
-	//public static final String AVATAR = "AVATAR";
+	public static final String PERSONAL_INFO = "PERSONAL_INFO";
+	public static final String AVATAR = "AVATAR";
+	
 public User() { }
 
 public User(String userNo, String password) {
@@ -34,7 +36,8 @@ public User(
         String userNo, String name, String password,
         String nickname, String telNumber, Timestamp birthday,
         Integer sex, Integer memLevel, String email,
-        String ig, Integer state, Boolean pass) {
+        String ig, Integer state, Boolean pass,
+        String personalInfo, String avatar) {
     super();
     this.userNo = userNo;
     this.name = name;
@@ -48,6 +51,8 @@ public User(
     this.ig = ig;
     this.state = state;
     this.pass = pass;
+    this.personalInfo = personalInfo;
+    this.avatar = avatar;
 }
 
 	
@@ -64,6 +69,9 @@ public User(
     private String ig; //IG帳號
     private Integer state; //帳號狀態(是否停權)
     private Boolean pass; // 帳號登入狀態
+    private String personalInfo; //個人介紹
+    private String avatar;
+    
     
     //get/set方法
 	public String getUserNo() {
@@ -98,12 +106,12 @@ public User(
 		this.nickname = nickname;
 	}
 
-	public String getTelephoneNumber() {
+	public String getTelNumber() {
 		return telNumber;
 	}
 
-	public void setTelephoneNumber(String telephoneNumber) {
-		this.telNumber = telephoneNumber;
+	public void setTelNumber(String telNumber) {
+		this.telNumber = telNumber;
 	}
 
 	public Timestamp getBirthday() {

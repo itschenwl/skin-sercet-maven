@@ -2,7 +2,13 @@ package peng.dao;
 
 import peng.javabean.User;
 
-public interface UserDao {
-	 void insert(User user) throws Exception;
-	public User validate(String username, String password) throws Exception; 
+public interface UserDao<T>{
+	void insert(User user) throws Exception;
+	
+	User validate(String username, String password) throws Exception;
+
+	void update(User user) throws Exception;
+
+	void IntroUpdate(User user) throws Exception;
+	
 }
