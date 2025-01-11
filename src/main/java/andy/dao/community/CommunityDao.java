@@ -10,6 +10,9 @@ public interface CommunityDao {
 	int update(CommunityComment item) throws Exception;
 	int deleteComment(Integer id) throws Exception;
 	List<CommunityComment> findAllComment(Integer artId) throws Exception;
-
+	
+	int insert(CommunityArticle item) throws Exception;
+	int update(CommunityArticle item) throws Exception;
+	int deleteArticle(Integer id) throws Exception;
 	List<CommunityArticle> findAll(String userId) throws Exception;
 }

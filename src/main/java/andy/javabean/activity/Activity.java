@@ -2,6 +2,8 @@ package andy.javabean.activity;
 
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
 
 // 活動
@@ -25,13 +27,17 @@ public class Activity {
 	private int id;
 	private String name;
 	private String description;
+    @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss", timezone = "GMT+8")
 	private Timestamp startDate;
+    @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss", timezone = "GMT+8")
 	private Timestamp endDate;
 	private int during;
 	private int price;
 	private int imageId;
 	private int state;
+    @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss", timezone = "GMT+8")
 	private Timestamp regStartDate;
+    @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss", timezone = "GMT+8")
 	private Timestamp regEndDate;
 	private int maxCount;
 	private int regCount;
