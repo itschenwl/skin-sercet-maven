@@ -28,7 +28,7 @@ public class ProductListDaoImpl implements ProductListDao {
 
 	@Override
 	public List<Product> selectAll() {
-		String sql = "SELECT " + "p.PROD_NO, p.PROD_NAME, p.PROD_INTRO, p.PRICE, p.PROD_STATE, p.PROD_COUNT, "
+		String sql = "SELECT " + "p.PROD_NO, p.PROD_NAME, p.PROD_INTRO, p.PROD_IMG ,p.PRICE, p.PROD_STATE, p.PROD_COUNT, "
 				+ "b.BRAND_NO, b.BRAND_NAME, b.BRAND_DESC, " + "t.TYPE_NO, t.TYPE_NAME, "
 				+ "GROUP_CONCAT(DISTINCT f.FUNT_NAME) AS FUNTS, "
 				+ "GROUP_CONCAT(DISTINCT i.INGR_NAME) AS INGREDIENTS, "
@@ -93,6 +93,8 @@ public class ProductListDaoImpl implements ProductListDao {
 					product.setBrandDesc(rs.getString("BRAND_DESC"));
 					product.setTypeNo(rs.getInt("TYPE_NO"));
 					product.setTypeName(rs.getString("TYPE_NAME"));
+	                product.setProdImg(rs.getString("PROD_IMG"));
+
 
 					product.setFuntName(rs.getString("FUNTS"));
 					product.setIngrName(rs.getString("INGREDIENTS"));
