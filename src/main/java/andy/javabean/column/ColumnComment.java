@@ -16,7 +16,7 @@ public class ColumnComment {
 	public static final String COLU_COMM_REP_CONT = "COLU_COMM_REP_CONT";		//	官方回覆內容	LONGTEXT
 	
 	private int id;
-	private int colArtiId;
+	private int colArtId;
 	private String userId;
 	private Comment comment;
 }

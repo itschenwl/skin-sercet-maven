@@ -31,7 +31,7 @@ public class ProductDetailDaoImpl implements ProductDetailDao {
 
 	@Override
 	public Product selectByProdNo(String prodNo) {
-		String sql = "SELECT " + "p.PROD_NO, p.PROD_NAME, p.PROD_INTRO, p.PRICE, p.PROD_STATE, p.PROD_COUNT, "
+		String sql = "SELECT " + "p.PROD_NO, p.PROD_NAME, p.PROD_INTRO, p.PRICE, p.PROD_IMG ,p.PROD_STATE, p.PROD_COUNT, "
 				+ "b.BRAND_NO, b.BRAND_NAME, b.BRAND_DESC, " + "t.TYPE_NO, t.TYPE_NAME, "
 				+ "img.PI_NO, img.PI_NAME, img.PI_DATA, img.PI_URL, img.PI_UPDATE " + "FROM PROD p "
 				+ "LEFT JOIN BRAND b ON p.BRAND_NO = b.BRAND_NO " + "LEFT JOIN PTYPE t ON p.TYPE_NO = t.TYPE_NO "
@@ -65,6 +65,9 @@ public class ProductDetailDaoImpl implements ProductDetailDao {
 		                product.setTypeName(rs.getString("TYPE_NAME"));
 		                product.setPiNo(rs.getInt("PI_NO"));
 		                product.setPiName(rs.getString("PI_NAME"));
+		                
+		                product.setProdImg(rs.getString("PROD_IMG"));
+		                
 		                product.setPiData(rs.getBytes("PI_DATA"));
 		                product.setPiUrl(rs.getString("PI_URL"));
 		                product.setPiUpdate(rs.getTimestamp("PI_UPDATE"));

@@ -34,7 +34,7 @@ public class ColumnDaoImpl implements ColumnDao {
 			") values(?, ?, ?, ?, ?, ?);";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
-			ps.setInt(1, item.getColArtiId());
+			ps.setInt(1, item.getColArtId());
 			ps.setString(2, item.getUserId());
 			Comment comment = item.getComment();
 			Message message = comment.getComment();
@@ -56,7 +56,7 @@ public class ColumnDaoImpl implements ColumnDao {
 				" where " + ColumnComment.COLU_COMM_NO + " = ?;";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
-			ps.setInt(1, item.getColArtiId());
+			ps.setInt(1, item.getColArtId());
 			ps.setString(2, item.getUserId());
 			Comment comment = item.getComment();
 			Message message = comment.getComment();
@@ -93,7 +93,7 @@ public class ColumnDaoImpl implements ColumnDao {
 			while (rs.next()) {
 				ColumnComment item = new ColumnComment();
 				item.setId(rs.getInt(ColumnComment.COLU_COMM_NO));
-				item.setColArtiId(rs.getInt(ColumnComment.COLU_ARTI_NO));
+				item.setColArtId(rs.getInt(ColumnComment.COLU_ARTI_NO));
 				item.setUserId(rs.getString(ColumnComment.USER_NO));
 				Comment comment = new Comment();
 				Message message = new Message();
@@ -113,9 +113,10 @@ public class ColumnDaoImpl implements ColumnDao {
 	
 	@Override
 	public List<ColumnArticle> findAll(String userId) throws SQLException {
-		String sql = "select CA.*, (CASE WHEN M.USER_NO = ? THEN true ELSE false END) as isCollection" +
-				" (select COUNT(*) from COLU_COMM AS CC where CC.COLU_ARTI_NO = CA.COLU_ARTI_NO) as commcount" +
-				" from " + ColumnArticle.TABLE_NAME + " as CA left join MFCOLA as M on CA.COLU_ARTI_NO = M.COLU_ARTI_NO;";
+		String sql = "select CA.*, (CASE WHEN M.USER_NO IS NOT NULL THEN true ELSE false END) as isCollection,"
+				+ " (select COUNT(*) from COLU_COMM AS CC where CC.COLU_ARTI_NO = CA.COLU_ARTI_NO) as commcount"
+				+ " from " + ColumnArticle.TABLE_NAME + " as CA left join"
+				+ " (select * from MFCOLA where USER_NO = ?) as M on CA.COLU_ARTI_NO = M.COLU_ARTI_NO;";
 		List<ColumnArticle> items = new ArrayList<ColumnArticle>();
 		try (
 				Connection connection = dataSource.getConnection();
@@ -126,7 +127,7 @@ public class ColumnDaoImpl implements ColumnDao {
 			while (rs.next()) {
 				ColumnArticle item = new ColumnArticle();
 				item.setId(rs.getInt(ColumnArticle.COLU_ARTI_NO));
-				item.setArtiColID(rs.getInt(ColumnArticle.ARTI_COLU_NO));
+				item.setArtColId(rs.getInt(ColumnArticle.ARTI_COLU_NO));
 				item.setUserId(rs.getString(ColumnArticle.USER_NO));
 				Article article = new Article();
 				article.setTitle(rs.getString(ColumnArticle.COLU_ARTI_NAME));

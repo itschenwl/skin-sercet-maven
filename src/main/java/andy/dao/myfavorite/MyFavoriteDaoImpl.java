@@ -189,7 +189,7 @@ public class MyFavoriteDaoImpl implements MyFavoriteDao {
 		while (rs.next()) {
 			ColumnArticle column = new ColumnArticle();
 			column.setId(rs.getInt(ColumnArticle.COLU_ARTI_NO));
-			column.setArtiColID(rs.getInt(ColumnArticle.ARTI_COLU_NO));
+			column.setArtColId(rs.getInt(ColumnArticle.ARTI_COLU_NO));
 			column.setUserId(rs.getString(ColumnArticle.USER_NO));
 			Article article = new Article();
 			article.setTitle(rs.getString(ColumnArticle.COLU_ARTI_NAME));
