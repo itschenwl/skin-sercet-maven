@@ -24,8 +24,18 @@ public class Product {
     private String piName;
     private byte[] piData;
     private String piUrl;
+    private String prodImg;
     private Timestamp piUpdate;
 
+    
+    public String getProdImg() {
+		return prodImg;
+	}
+
+	public void setProdImg(String prodImg) {
+		this.prodImg = prodImg;
+	}
+    
     // 多筆功能相關屬性
     private List<Integer> funtNos;
     private List<String> funtNames;
@@ -44,7 +54,10 @@ public class Product {
     private double avgScore;
   
     
-    public String getProdIntro() {
+    
+
+
+	public String getProdIntro() {
 		return prodIntro;
 	}
 
