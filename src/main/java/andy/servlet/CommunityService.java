@@ -17,8 +17,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import andy.dao.community.CommunityDaoImpl;
+import andy.javabean.ArticleComment;
 import andy.javabean.community.CommunityArticle;
-import andy.javabean.community.CommunityComment;
 import util.Result;
 
 @Path("/community")
@@ -38,7 +38,7 @@ public class CommunityService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	// 新增
-	public Response add(CommunityComment item) {
+	public Response add(ArticleComment item) {
 		try {
 			int result = communityDaoImpl.insert(item);
 			if (result > 0) {
@@ -61,7 +61,7 @@ public class CommunityService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	// 修改
-	public Response update(CommunityComment item) {
+	public Response update(ArticleComment item) {
 		try {
 			int result = communityDaoImpl.update(item);
 			if (result > 0) {
@@ -109,7 +109,7 @@ public class CommunityService {
 	// 取得此活動的所有意見內容
 	public Response findAllComment(@QueryParam("artId") Integer artId) {
 		try {
-			List<CommunityComment> items = communityDaoImpl.findAllComment(artId);
+			List<ArticleComment> items = communityDaoImpl.findAllComment(artId);
 			System.out.println("CommunityComment.size(): " + items.size());
 			/*if (items.isEmpty()) {
 				return Response.status(Response.Status.NOT_FOUND)

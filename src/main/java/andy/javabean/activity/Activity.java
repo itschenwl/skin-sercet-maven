@@ -41,6 +41,7 @@ public class Activity {
 	private Timestamp regEndDate;
 	private int maxCount;
 	private int regCount;
+	private int joinState;					// 報名狀態
 	private Boolean isFavorite;        // 是否喜歡
 	private Integer favoriteCount;         // 喜歡人數
 	private Boolean isComment;         // 是否有留言

@@ -10,15 +10,23 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import andy.javabean.Article;
+import andy.javabean.ArticleComment;
 import andy.javabean.Comment;
 import andy.javabean.Message;
 import andy.javabean.column.ColumnArticle;
-import andy.javabean.column.ColumnComment;
-import andy.javabean.community.CommunityComment;
 import util.ServiceLocator;
 
 public class ColumnDaoImpl implements ColumnDao {
 
+	public static final String TABLE_NAME = "COLU_COMM";
+	public static final String COLU_COMM_NO = "COLU_COMM_NO";		//	專欄文章留言編號	INT
+	public static final String COLU_ARTI_NO = "COLU_ARTI_NO";		//	專欄文章編號	INT
+	public static final String USER_NO = "USER_NO";		//	用戶編號	CHAR
+	public static final String COLU_COMM_COM_DATE = "COLU_COMM_COM_DATE";		//	留言日期	DATETIME
+	public static final String COLU_COMM_COM_CONT = "COLU_COMM_COM_CONT";		//	留言內容	LONGTEXT
+	public static final String COLU_COMM_REP_DATE = "COLU_COMM_REP_DATE";		//	官方回覆日期	DATETIME
+	public static final String COLU_COMM_REP_CONT = "COLU_COMM_REP_CONT";		//	官方回覆內容	LONGTEXT
+	
 	DataSource dataSource;
 
 	public ColumnDaoImpl() {
@@ -26,15 +34,15 @@ public class ColumnDaoImpl implements ColumnDao {
 	}
 
 	@Override
-	public int insert(ColumnComment item) throws SQLException {
-		String sql = "insert into " + ColumnComment.TABLE_NAME + " (" +
-				ColumnComment.COLU_ARTI_NO + ", " + ColumnComment.USER_NO + ", " + 
-				ColumnComment.COLU_COMM_COM_DATE + ", " + ColumnComment.COLU_COMM_COM_CONT + ", " +
-				ColumnComment.COLU_COMM_REP_DATE + ", " + ColumnComment.COLU_COMM_REP_CONT +
+	public int insert(ArticleComment item) throws SQLException {
+		String sql = "insert into " + TABLE_NAME + " (" +
+				COLU_ARTI_NO + ", " + USER_NO + ", " + 
+				COLU_COMM_COM_DATE + ", " + COLU_COMM_COM_CONT + ", " +
+				COLU_COMM_REP_DATE + ", " + COLU_COMM_REP_CONT +
 			") values(?, ?, ?, ?, ?, ?);";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
-			ps.setInt(1, item.getColArtId());
+			ps.setInt(1, item.getArtId());
 			ps.setString(2, item.getUserId());
 			Comment comment = item.getComment();
 			Message message = comment.getComment();
@@ -48,15 +56,15 @@ public class ColumnDaoImpl implements ColumnDao {
 	}
 
 	@Override
-	public int update(ColumnComment item) throws SQLException {
-		String sql = "update " + ColumnComment.TABLE_NAME + " set " + 
-				ColumnComment.COLU_ARTI_NO + " = ?, " + ColumnComment.USER_NO + " = ?, " + 
-				ColumnComment.COLU_COMM_COM_DATE + " = ?, " + ColumnComment.COLU_COMM_COM_CONT + " = ?, " +
-				ColumnComment.COLU_COMM_REP_DATE + " = ?, " + ColumnComment.COLU_COMM_REP_CONT + " = ?" +
-				" where " + ColumnComment.COLU_COMM_NO + " = ?;";
+	public int update(ArticleComment item) throws SQLException {
+		String sql = "update " + TABLE_NAME + " set " + 
+				COLU_ARTI_NO + " = ?, " + USER_NO + " = ?, " + 
+				COLU_COMM_COM_DATE + " = ?, " + COLU_COMM_COM_CONT + " = ?, " +
+				COLU_COMM_REP_DATE + " = ?, " + COLU_COMM_REP_CONT + " = ?" +
+				" where " + COLU_COMM_NO + " = ?;";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
-			ps.setInt(1, item.getColArtId());
+			ps.setInt(1, item.getArtId());
 			ps.setString(2, item.getUserId());
 			Comment comment = item.getComment();
 			Message message = comment.getComment();
@@ -72,7 +80,7 @@ public class ColumnDaoImpl implements ColumnDao {
 
 	@Override
 	public int deleteComment(Integer id) throws SQLException {
-		String sql = "delete from " + ColumnComment.TABLE_NAME + " where " + ColumnComment.COLU_COMM_NO + " = ?;";
+		String sql = "delete from " + TABLE_NAME + " where " + COLU_COMM_NO + " = ?;";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
 			ps.setInt(1, id);
@@ -81,9 +89,9 @@ public class ColumnDaoImpl implements ColumnDao {
 	}
 
 	@Override
-	public List<ColumnComment> findAllComment(Integer artId) throws Exception {
-		String sql = "select * from " + ColumnComment.TABLE_NAME + " where " + ColumnComment.COLU_ARTI_NO + " = ?;";
-		List<ColumnComment> items = new ArrayList<ColumnComment>();
+	public List<ArticleComment> findAllComment(Integer artId) throws Exception {
+		String sql = "select * from " + TABLE_NAME + " where " + COLU_ARTI_NO + " = ?;";
+		List<ArticleComment> items = new ArrayList<ArticleComment>();
 		try (
 				Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);
@@ -91,18 +99,18 @@ public class ColumnDaoImpl implements ColumnDao {
 			ps.setInt(1, artId);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				ColumnComment item = new ColumnComment();
-				item.setId(rs.getInt(ColumnComment.COLU_COMM_NO));
-				item.setColArtId(rs.getInt(ColumnComment.COLU_ARTI_NO));
-				item.setUserId(rs.getString(ColumnComment.USER_NO));
+				ArticleComment item = new ArticleComment();
+				item.setId(rs.getInt(COLU_COMM_NO));
+				item.setArtId(rs.getInt(COLU_ARTI_NO));
+				item.setUserId(rs.getString(USER_NO));
 				Comment comment = new Comment();
 				Message message = new Message();
-				message.setMessage(rs.getString(ColumnComment.COLU_COMM_COM_CONT));
-				message.setUpdateDate(rs.getTimestamp(ColumnComment.COLU_COMM_COM_DATE));
+				message.setMessage(rs.getString(COLU_COMM_COM_CONT));
+				message.setUpdateDate(rs.getTimestamp(COLU_COMM_COM_DATE));
 				comment.setComment(message);
 				Message reply = new Message();
-				reply.setMessage(rs.getString(ColumnComment.COLU_COMM_REP_CONT));
-				reply.setUpdateDate(rs.getTimestamp(ColumnComment.COLU_COMM_REP_DATE));
+				reply.setMessage(rs.getString(COLU_COMM_REP_CONT));
+				reply.setUpdateDate(rs.getTimestamp(COLU_COMM_REP_DATE));
 				comment.setReply(reply);
 				item.setComment(comment);
 				items.add(item);
