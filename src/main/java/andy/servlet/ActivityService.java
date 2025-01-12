@@ -172,31 +172,6 @@ public class ActivityService {
 	}
 
 	@GET // GET請求
-	@Path("/join")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON) // 輸出資料轉成JSON
-	// 取得此使用者參加的所有活動
-	public Response findAllJoin(@QueryParam("userId") String userId) {
-		try {
-			List<Activity> items = activityDaoImpl.findAllJoin(userId);
-			System.out.println("Activity findAll Join : " + items.size());
-			/*if (items.isEmpty()) {
-				return Response.status(Response.Status.NOT_FOUND)
-						.entity(new Result(0, "Activity findAll Join No activies available"))
-						.build();
-			}*/
-			// 成功取得意見：回傳OK狀態與意見資訊
-			return Response.ok(gson.toJson(items)).build();
-		} catch (Exception e) {
-			// 處理執行錯誤
-			System.out.println("Activity findAll Join error: " + e.getMessage());
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(new Result(0, e.getMessage()))
-                    .build();
-		}
-	}
-
-	@GET // GET請求
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON) // 輸出資料轉成JSON
 	// 取得此使用者參加的所有活動
