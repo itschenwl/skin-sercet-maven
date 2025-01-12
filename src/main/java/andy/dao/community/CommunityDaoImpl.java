@@ -83,7 +83,7 @@ public class CommunityDaoImpl implements CommunityDao {
 
 	@Override
 	public List<CommunityComment> findAllComment(Integer artId) throws SQLException {
-		String sql = "select * from " + CommunityComment.TABLE_NAME + " where " + CommunityComment.COMM_COMM_NO + " = ?;";
+		String sql = "select * from " + CommunityComment.TABLE_NAME + " where " + CommunityComment.COMM_ARTI_NO + " = ?;";
 		List<CommunityComment> items = new ArrayList<CommunityComment>();
 		try (
 				Connection connection = dataSource.getConnection();
@@ -110,6 +110,53 @@ public class CommunityDaoImpl implements CommunityDao {
 			}
 		} 
 		return items;
+	}
+
+	@Override
+	public int insert(CommunityArticle item) throws SQLException {
+		String sql = "insert into " + CommunityArticle.TABLE_NAME + " (" +
+				CommunityArticle.USER_NO + ", " + 
+				CommunityArticle.COMM_ARTI_NAME + ", " + CommunityArticle.COMM_ARTI_CONT + ", " +
+				CommunityArticle.COMM_PUB_DATE +
+			") values(?, ?, ?, ?);";
+		try (Connection connection = dataSource.getConnection();
+				PreparedStatement ps = connection.prepareStatement(sql);) {
+			ps.setString(1, item.getUserId());
+			Article article = item.getComment();
+			ps.setString(2, article.getTitle());
+			ps.setString(3, article.getContent());
+			ps.setTimestamp(4, article.getPostDate());
+			return ps.executeUpdate();
+		}
+	}
+
+	@Override
+	public int update(CommunityArticle item) throws SQLException {
+		String sql = "update " + CommunityArticle.TABLE_NAME + " set " + 
+				CommunityArticle.USER_NO + " = ?, " + 
+				CommunityArticle.COMM_ARTI_NAME + " = ?, " + CommunityArticle.COMM_ARTI_CONT + " = ?, " +
+				CommunityArticle.COMM_PUB_DATE + " = ?" +
+				" where " + CommunityArticle.COMM_ARTI_NO + " = ?;";
+		try (Connection connection = dataSource.getConnection();
+				PreparedStatement ps = connection.prepareStatement(sql);) {
+			ps.setString(1, item.getUserId());
+			Article article = item.getComment();
+			ps.setString(2, article.getTitle());
+			ps.setString(3, article.getContent());
+			ps.setTimestamp(4, article.getPostDate());
+			ps.setInt(5, item.getId());
+			return ps.executeUpdate();
+		}
+	}
+
+	@Override
+	public int deleteArticle(Integer id) throws SQLException {
+		String sql = "delete from " + CommunityArticle.TABLE_NAME + " where " + CommunityArticle.COMM_ARTI_NO + " = ?;";
+		try (Connection connection = dataSource.getConnection();
+				PreparedStatement ps = connection.prepareStatement(sql);) {
+			ps.setInt(1, id);
+			return ps.executeUpdate();
+		}
 	}
 
 	@Override

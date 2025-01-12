@@ -2,6 +2,8 @@ package andy.javabean.activity;
 
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
 
 // 活動人員
@@ -17,5 +19,6 @@ public class ActivityJoin {
 	private int actId;
 	private String userId;
 	private int state;
+    @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss", timezone = "GMT+8")
 	private Timestamp registerDate;
 }

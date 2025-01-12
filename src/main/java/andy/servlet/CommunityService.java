@@ -49,6 +49,7 @@ public class CommunityService {
                     .build();
 		} catch (Exception e) {
 			// 處理執行錯誤
+			System.out.println("error: " + e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new Result(0, e.getMessage()))
                     .build();
@@ -71,6 +72,7 @@ public class CommunityService {
                     .build();
 		} catch (Exception e) {
 			// 處理執行錯誤
+			System.out.println("error: " + e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new Result(0, e.getMessage()))
                     .build();
@@ -93,6 +95,7 @@ public class CommunityService {
 	                .build();
 		} catch (Exception e) {
 			// 處理執行錯誤
+			System.out.println("error: " + e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new Result(0, e.getMessage()))
                     .build();
@@ -108,15 +111,82 @@ public class CommunityService {
 		try {
 			List<CommunityComment> items = communityDaoImpl.findAllComment(artId);
 			System.out.println("CommunityComment.size(): " + items.size());
-			if (items.isEmpty()) {
+			/*if (items.isEmpty()) {
 				return Response.status(Response.Status.NOT_FOUND)
 						.entity(new Result(0, "No communities comment available"))
 						.build();
-			}
+			}*/
 			// 成功取得意見：回傳OK狀態與意見資訊
 			return Response.ok(gson.toJson(items)).build();
 		} catch (Exception e) {
 			// 處理執行錯誤
+			System.out.println("error: " + e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new Result(0, e.getMessage()))
+                    .build();
+		}
+	}
+
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	// 新增
+	public Response add(CommunityArticle item) {
+		try {
+			int result = communityDaoImpl.insert(item);
+			if (result > 0) {
+				return Response.ok(new Result(result, "Community Article added successfully")).build();
+			}
+			return Response.status(Response.Status.NOT_FOUND)
+                    .entity(new Result(0, "Community Article added failed"))
+                    .build();
+		} catch (Exception e) {
+			// 處理執行錯誤
+			System.out.println("error: " + e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new Result(0, e.getMessage()))
+                    .build();
+		}
+	}
+
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	// 修改
+	public Response update(CommunityArticle item) {
+		try {
+			int result = communityDaoImpl.update(item);
+			if (result > 0) {
+				return Response.ok(new Result(result, "Community Article updated successfully")).build();
+			}
+			return Response.status(Response.Status.NOT_FOUND)
+                    .entity(new Result(0, "Community Article updated failed"))
+                    .build();
+		} catch (Exception e) {
+			// 處理執行錯誤
+			System.out.println("error: " + e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new Result(0, e.getMessage()))
+                    .build();
+		}
+	}
+
+	@DELETE
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	// 刪除留言
+	public Response deleteArticle(@QueryParam("id") Integer id) {
+		try {
+			int result = communityDaoImpl.deleteArticle(id);
+			if (result > 0) {
+				return Response.ok(new Result(result, "Community Article deleted successfully")).build();
+			}
+	        return Response.status(Response.Status.NOT_FOUND)
+	        		.entity(new Result(0, "Community Article deleted failed"))
+	                .build();
+		} catch (Exception e) {
+			// 處理執行錯誤
+			System.out.println("error: " + e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new Result(0, e.getMessage()))
                     .build();
@@ -131,11 +201,11 @@ public class CommunityService {
 		try {
 			List<CommunityArticle> items = communityDaoImpl.findAll(userId);
 			System.out.println("CommunityArticle.size(): " + items.size());
-			if (items.isEmpty()) {
+			/*if (items.isEmpty()) {
 				return Response.status(Response.Status.NOT_FOUND)
 						.entity(new Result(0, "No communities article available"))
 						.build();
-			}
+			}*/
 			// 成功取得意見：回傳OK狀態與意見資訊
 			return Response.ok(gson.toJson(items)).build();
 		} catch (Exception e) {
