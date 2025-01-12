@@ -73,7 +73,6 @@ public class UserService {
 	}
 	
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response register(@QueryParam("userNo") String userNo, @QueryParam("password") String password) {
 
