@@ -4,5 +4,5 @@ import java.util.List;
 import aaron.bean.Product;
 
 public interface ProductListDao {
-    List<Product> selectAll();
+    List<Product> selectAll(String userId);
 }

@@ -26,7 +26,7 @@ public class Product {
     private String piUrl;
     private String prodImg;
     private Timestamp piUpdate;
-
+    private Boolean isCollection;
     
     public String getProdImg() {
 		return prodImg;
@@ -301,6 +301,14 @@ public class Product {
 
 	public void setAvgScore(int avgScore) {
 		this.avgScore = avgScore;
+	}
+
+	public Boolean getIsCollection() {
+		return isCollection;
+	}
+
+	public void setIsCollection(Boolean isCollection) {
+		this.isCollection = isCollection;
 	}
 }
 
