@@ -17,8 +17,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import andy.dao.activity.ActivityDaoImpl;
+import andy.javabean.ArticleComment;
 import andy.javabean.activity.Activity;
-import andy.javabean.activity.ActivityComment;
 import andy.javabean.activity.ActivityJoin;
 import util.Result;
 
@@ -39,7 +39,7 @@ public class ActivityService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	// 新增
-	public Response add(ActivityComment item) {
+	public Response add(ArticleComment item) {
 		try {
 			int result = activityDaoImpl.insert(item);
 			if (result > 0) {
@@ -61,7 +61,7 @@ public class ActivityService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	// 修改
-	public Response update(ActivityComment item) {
+	public Response update(ArticleComment item) {
 		try {
 			int result = activityDaoImpl.update(item);
 			if (result > 0) {
@@ -107,18 +107,18 @@ public class ActivityService {
 	// 取得此活動的所有意見內容
 	public Response findAll(@QueryParam("actId") Integer actId) {
 		try {
-			List<ActivityComment> items = activityDaoImpl.findAllComment(actId);
-			System.out.println("ActivityComment.size(): " + items.size());
-			if (items.isEmpty()) {
+			List<ArticleComment> items = activityDaoImpl.findAllComment(actId);
+			System.out.println("Activity Comment findAll: " + items.size());
+			/*if (items.isEmpty()) {
 				return Response.status(Response.Status.NOT_FOUND)
-						.entity(new Result(0, "No activies comment available"))
+						.entity(new Result(0, "Activity Comment findAll No activies comment available"))
 						.build();
-			}
+			}*/
 			// 成功取得意見：回傳OK狀態與意見資訊
 			return Response.ok(gson.toJson(items)).build();
 		} catch (Exception e) {
 			// 處理執行錯誤
-			System.out.println("error: " + e.getMessage());
+			System.out.println("Activity Comment findAll error: " + e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new Result(0, e.getMessage()))
                     .build();
@@ -141,6 +141,7 @@ public class ActivityService {
                     .build();
 		} catch (Exception e) {
 			// 處理執行錯誤
+			System.out.println("Activity Join added error: " + e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new Result(0, e.getMessage()))
                     .build();
@@ -156,13 +157,14 @@ public class ActivityService {
 		try {
 			int result = activityDaoImpl.deleteJoin(id, userId);
 			if (result > 0) {
-				return Response.ok(new Result(result, "Activity Join deleted successfully")).build();
+				return Response.ok(new Result(result, "Activity Join delete successfully")).build();
 			}
 	        return Response.status(Response.Status.NOT_FOUND)
-	        		.entity(new Result(0, "Activity Join deleted failed"))
+	        		.entity(new Result(0, "Activity Join delete failed"))
 	                .build();
 		} catch (Exception e) {
 			// 處理執行錯誤
+			System.out.println("Activity Join delete error: " + e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new Result(0, e.getMessage()))
                     .build();
@@ -177,16 +179,17 @@ public class ActivityService {
 	public Response findAllJoin(@QueryParam("userId") String userId) {
 		try {
 			List<Activity> items = activityDaoImpl.findAllJoin(userId);
-			System.out.println("Activity.size(): " + items.size());
-			if (items.isEmpty()) {
+			System.out.println("Activity findAll Join : " + items.size());
+			/*if (items.isEmpty()) {
 				return Response.status(Response.Status.NOT_FOUND)
-						.entity(new Result(0, "No activies available"))
+						.entity(new Result(0, "Activity findAll Join No activies available"))
 						.build();
-			}
+			}*/
 			// 成功取得意見：回傳OK狀態與意見資訊
 			return Response.ok(gson.toJson(items)).build();
 		} catch (Exception e) {
 			// 處理執行錯誤
+			System.out.println("Activity findAll Join error: " + e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new Result(0, e.getMessage()))
                     .build();
@@ -200,17 +203,17 @@ public class ActivityService {
 	public Response findAll(@QueryParam("userId") String userId) {
 		try {
 			List<Activity> items = activityDaoImpl.findAll(userId);
-			System.out.println("Activity.size(): " + items.size());
-			if (items.isEmpty()) {
+			System.out.println("Activity findAll: " + items.size());
+			/*if (items.isEmpty()) {
 				return Response.status(Response.Status.NOT_FOUND)
-						.entity(new Result(0, "No activies available"))
+						.entity(new Result(0, "Activity findAll No activies available"))
 						.build();
-			}
+			}*/
 			// 成功取得意見：回傳OK狀態與意見資訊
 			return Response.ok(gson.toJson(items)).build();
 		} catch (Exception e) {
 			// 處理執行錯誤
-			System.out.println("error: " + e.getMessage());
+			System.out.println("Activity findAll error: " + e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new Result(0, e.getMessage()))
                     .build();
