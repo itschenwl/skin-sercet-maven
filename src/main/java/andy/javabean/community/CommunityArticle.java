@@ -17,6 +17,7 @@ public class CommunityArticle {
 	private int id;
 	//private int commId;
 	private String userId;
+	private String userNickName;
 	private Article comment;
 	private Boolean isFavorite;        // 是否喜歡
 	private Integer favoriteCount;         // 喜歡人數

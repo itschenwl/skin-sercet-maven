@@ -8,5 +8,6 @@ public class ArticleComment {
 	private int id;
 	private int artId;
 	private String userId;
+	private String userNickName;
 	private Comment comment;
 }
