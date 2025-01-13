@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 import peng.javabean.User;
 import util.ServiceLocator;
 
+@SuppressWarnings("rawtypes")
 public class UserDaoImpl implements UserDao{
 	DataSource dataSource;
 
@@ -34,11 +35,11 @@ public class UserDaoImpl implements UserDao{
 			        rs.getString(User.TEL_NUMBER) != null ? rs.getString(User.TEL_NUMBER) : "", // TEL_NUMBER 允許 NULL，處理為空字串
 			        rs.getTimestamp(User.BIRTHDAY), // BIRTHDAY 允許 NULL，不需要處理為 ""，直接使用 null
 			        rs.getInt(User.SEX) != 0 ? rs.getInt(User.SEX) : null, // SEX 允許 NULL，處理為 null
-			        rs.getInt(User.MEM_LEVEL), // MEM_LEVEL 預設值 0，不為 NULL
+//			        rs.getInt(User.MEM_LEVEL), // MEM_LEVEL 預設值 0，不為 NULL
 			        rs.getString(User.EMAIL) != null ? rs.getString(User.EMAIL) : "", // EMAIL 允許 NULL，處理為空字串
 			        rs.getString(User.IG) != null ? rs.getString(User.IG) : "", // IG 允許 NULL，處理為空字串
-			        rs.getInt(User.STATE), // STATE 預設值 1，不為 NULL
-			        rs.getBoolean(User.PASS), // PASS 預設值 false，不為 NULL
+//			        rs.getInt(User.STATE), // STATE 預設值 1，不為 NULL
+//			        rs.getBoolean(User.PASS), // PASS 預設值 false，不為 NULL
 			        rs.getString(User.PERSONAL_INFO) != null ? rs.getString(User.PERSONAL_INFO) : "",
 			        rs.getString(User.AVATAR) != null ? rs.getString(User.AVATAR) : ""
 					);
@@ -91,45 +92,60 @@ public class UserDaoImpl implements UserDao{
 	}
 	
 	
-	@Override
-	public void IntroUpdate(User user) throws SQLException {
-		String sql = "update "+ User.TABLE_NAME 
-					+ "set " + User.IG 
-					+ " = ?, " + User.PERSONAL_INFO 
-					+" = ? where " + User.USER_NO +" = ?;";
-		try (Connection connection = dataSource.getConnection();
-				PreparedStatement ps = connection.prepareStatement(sql);) {
-			ps.setString(1, user.getIg());
-			ps.setString(2, user.getPersonalInfo());
-			ps.setString(3, user.getUserNo());
-			ps.executeUpdate();
-		}
-	}
+//	@Override
+//	public void IntroUpdate(User user) throws SQLException {
+//		String sql = "update "+ User.TABLE_NAME 
+//					+ "set " + User.IG 
+//					+ " = ?, " + User.PERSONAL_INFO 
+//					+" = ? where " + User.USER_NO +" = ?;";
+//		try (Connection connection = dataSource.getConnection();
+//				PreparedStatement ps = connection.prepareStatement(sql);) {
+//			ps.setString(1, user.getIg());
+//			ps.setString(2, user.getPersonalInfo());
+//			ps.setString(3, user.getUserNo());
+//			ps.executeUpdate();
+//		}
+//	}
 	
 	@Override
-	public void update(User user) throws SQLException {
-		String sql = "update "+ User.TABLE_NAME 
-					+ "set " + User.AVATAR 
-					+ " = ?, " + User.NICK_NAME 
-					+ " = ?, " + User.FULL_NAME 
-					+ " = ?, " + User.SEX 
-					+ " = ?, " + User.TEL_NUMBER 
-					+ " = ?, " + User.EMAIL 
-					+ " = ?, " + User.BIRTHDAY 
-					+ " = ?, " + User.USER_PASSWORD 
-					+" = ? where " + User.USER_NO +" = ?;";
+	public int update(User user) throws SQLException {
+		String sql = "update "+ User.TABLE_NAME + " set "
+					+ User.AVATAR + " = ?, " 
+					+ User.NICK_NAME + " = ?, " 
+					+ User.FULL_NAME + " = ?, " 
+					+ User.SEX + " = ?, " 
+					+ User.TEL_NUMBER + " = ?, " 
+					+ User.EMAIL + " = ?, " 
+					+ User.BIRTHDAY + " = ?, " 
+					+ User.USER_PASSWORD + " = ?, " 
+					+ User.PERSONAL_INFO + " = ?, " 
+					+ User.IG + " = ?"
+					+" where " + User.USER_NO +" = ?;";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
-			ps.setString(1, user.getAvatar());
-			ps.setString(2, user.getNickname());
-			ps.setString(3, user.getName());
-			ps.setInt(4, user.getSex());
-			ps.setString(5, user.getTelNumber());
-			ps.setString(6, user.getEmail());
-			ps.setTimestamp(7, user.getBirthday());
-			ps.setString(8, user.getPassword());
-			ps.setString(9, user.getUserNo());
-			ps.executeUpdate();
+//			ps.setString(1, user.getAvatar());
+//			ps.setString(2, user.getNickname());
+//			ps.setString(3, user.getName());
+//			ps.setInt(4, user.getSex());
+//			ps.setString(5, user.getTelNumber());
+//			ps.setString(6, user.getEmail());
+//			ps.setTimestamp(7, user.getBirthday());
+//			ps.setString(8, user.getPassword());
+//			ps.setString(9, user.getPersonalInfo());
+//			ps.setString(10, user.getIg());
+//			ps.setString(11, user.getUserNo());
+			ps.setString(1, user.getAvatar() != null ? user.getAvatar() : null);
+			ps.setString(2, user.getNickname() != null ? user.getNickname() : null);
+			ps.setString(3, user.getName() != null ? user.getName() : null);
+			ps.setObject(4, user.getSex() != null ? user.getSex() : null, java.sql.Types.INTEGER);
+			ps.setString(5, user.getTelNumber() != null ? user.getTelNumber() : null);
+			ps.setString(6, user.getEmail() != null ? user.getEmail() : null);
+			ps.setTimestamp(7, user.getBirthday() != null ? user.getBirthday() : null);
+			ps.setString(8, user.getPassword() != null ? user.getPassword() : null);
+			ps.setString(9, user.getPersonalInfo() != null ? user.getPersonalInfo() : null);
+			ps.setString(10, user.getIg() != null ? user.getIg() : null);
+			ps.setString(11, user.getUserNo());
+			return ps.executeUpdate();
 		}
 	}
 	
@@ -154,11 +170,11 @@ public class UserDaoImpl implements UserDao{
 				        rs.getString(User.TEL_NUMBER) != null ? rs.getString(User.TEL_NUMBER) : "", // TEL_NUMBER 允許 NULL，處理為空字串
 				        rs.getTimestamp(User.BIRTHDAY), // BIRTHDAY 允許 NULL，不需要處理為 ""，直接使用 null
 				        rs.getInt(User.SEX) != 0 ? rs.getInt(User.SEX) : null, // SEX 允許 NULL，處理為 null
-				        rs.getInt(User.MEM_LEVEL), // MEM_LEVEL 預設值 0，不為 NULL
+//				        rs.getInt(User.MEM_LEVEL), // MEM_LEVEL 預設值 0，不為 NULL
 				        rs.getString(User.EMAIL) != null ? rs.getString(User.EMAIL) : "", // EMAIL 允許 NULL，處理為空字串
 				        rs.getString(User.IG) != null ? rs.getString(User.IG) : "", // IG 允許 NULL，處理為空字串
-				        rs.getInt(User.STATE), // STATE 預設值 1，不為 NULL
-				        rs.getBoolean(User.PASS), // PASS 預設值 false，不為 NULL
+//				        rs.getInt(User.STATE), // STATE 預設值 1，不為 NULL
+//				        rs.getBoolean(User.PASS), // PASS 預設值 false，不為 NULL
 				        rs.getString(User.PERSONAL_INFO) != null ? rs.getString(User.PERSONAL_INFO) : "",
 				        rs.getString(User.AVATAR) != null ? rs.getString(User.AVATAR) : ""
 				    );
