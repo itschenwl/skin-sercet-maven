@@ -27,8 +27,9 @@ public class ProductListDaoImpl implements ProductListDao {
 	}
 
 	@Override
-	public List<Product> selectAll() {
-		String sql = "SELECT " + "p.PROD_NO, p.PROD_NAME, p.PROD_INTRO, p.PROD_IMG ,p.PRICE, p.PROD_STATE, p.PROD_COUNT, "
+	public List<Product> selectAll(String userId) {
+		String sql = "select CASE WHEN mf.USER_NO = ? THEN true ELSE false END as isCollection, res.* from ("
+				+ "SELECT " + "p.PROD_NO, p.PROD_NAME, p.PROD_INTRO, p.PROD_IMG ,p.PRICE, p.PROD_STATE, p.PROD_COUNT, "
 				+ "b.BRAND_NO, b.BRAND_NAME, b.BRAND_DESC, " + "t.TYPE_NO, t.TYPE_NAME, "
 				+ "GROUP_CONCAT(DISTINCT f.FUNT_NAME) AS FUNTS, "
 				+ "GROUP_CONCAT(DISTINCT i.INGR_NAME) AS INGREDIENTS, "
@@ -46,7 +47,7 @@ public class ProductListDaoImpl implements ProductListDao {
 				+ "LEFT JOIN ( " + "    SELECT PROD_NO, " + "           COUNT(*) AS EVAL_COUNT, " // 統計評價比數
 				+ "           ROUND(IFNULL(AVG(EVAL_LEVEL), 0), 0) AS AVG_SCORE " // 計算平均星星數，無評價時預設為0
 				+ "    FROM EVALUATE " + "    GROUP BY PROD_NO " + ") e_stats ON p.PROD_NO = e_stats.PROD_NO "
-				+ "GROUP BY p.PROD_NO";
+				+ "GROUP BY p.PROD_NO) as res left join MFPRO as mf on res.PROD_NO = mf.PROD_NO";
 
 //        String sql = 
 //        		"SELECT " +
@@ -77,6 +78,7 @@ public class ProductListDaoImpl implements ProductListDao {
 		List<Product> productList = new ArrayList<>();
 
 		try (Connection conn = ds.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setString(1, userId);
 			try (ResultSet rs = pstmt.executeQuery()) {
 				while (rs.next()) {
 					Product product = new Product();
@@ -102,6 +104,8 @@ public class ProductListDaoImpl implements ProductListDao {
 					// 評價
 					product.setEvalCount(rs.getInt("EVAL_COUNT"));
 					product.setAvgScore(rs.getInt("AVG_SCORE"));
+					
+					product.setIsCollection(rs.getBoolean("isCollection"));
 
 					productList.add(product);
 				}

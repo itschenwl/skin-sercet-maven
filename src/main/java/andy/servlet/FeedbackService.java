@@ -72,11 +72,11 @@ public class FeedbackService {
 			} else {
 				List<Feedback> feedbacks = feedbackDaoImpl.findAll();
 				System.out.println("feedbacks.size(): " + feedbacks.size());
-				if (feedbacks.isEmpty()) {
+				/*if (feedbacks.isEmpty()) {
 					return Response.status(Response.Status.NOT_FOUND)
 							.entity(new Result(0, "No feedbacks available"))
 							.build();
-				}
+				}*/
 				// 成功取得意見：回傳OK狀態與意見資訊
 				return Response.ok(gson.toJson(feedbacks)).build();
 			}

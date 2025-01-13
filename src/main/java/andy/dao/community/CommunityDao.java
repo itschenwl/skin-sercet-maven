@@ -2,14 +2,14 @@ package andy.dao.community;
 
 import java.util.List;
 
+import andy.javabean.ArticleComment;
 import andy.javabean.community.CommunityArticle;
-import andy.javabean.community.CommunityComment;
 
 public interface CommunityDao {
-	int insert(CommunityComment item) throws Exception;
-	int update(CommunityComment item) throws Exception;
+	int insert(ArticleComment item) throws Exception;
+	int update(ArticleComment item) throws Exception;
 	int deleteComment(Integer id) throws Exception;
-	List<CommunityComment> findAllComment(Integer artId) throws Exception;
+	List<ArticleComment> findAllComment(Integer artId) throws Exception;
 	
 	int insert(CommunityArticle item) throws Exception;
 	int update(CommunityArticle item) throws Exception;

@@ -17,8 +17,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import andy.dao.column.ColumnDaoImpl;
+import andy.javabean.ArticleComment;
 import andy.javabean.column.ColumnArticle;
-import andy.javabean.column.ColumnComment;
 import util.Result;
 
 @Path("/column")
@@ -38,7 +38,7 @@ public class ColumnService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	// 新增
-	public Response add(ColumnComment item) {
+	public Response add(ArticleComment item) {
 		try {
 			int result = columnDaoImpl.insert(item);
 			if (result > 0) {
@@ -60,7 +60,7 @@ public class ColumnService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	// 修改
-	public Response update(ColumnComment item) {
+	public Response update(ArticleComment item) {
 		try {
 			int result = columnDaoImpl.update(item);
 			if (result > 0) {
@@ -106,13 +106,13 @@ public class ColumnService {
 	// 取得此專欄的所有意見內容
 	public Response findAllComment(@QueryParam("artId") Integer artId) {
 		try {
-			List<ColumnComment> items = columnDaoImpl.findAllComment(artId);
+			List<ArticleComment> items = columnDaoImpl.findAllComment(artId);
 			System.out.println("ColumnComment.size(): " + items.size());
-			if (items.isEmpty()) {
+			/*if (items.isEmpty()) {
 				return Response.status(Response.Status.NOT_FOUND)
 						.entity(new Result(0, "No columns comment available"))
 						.build();
-			}
+			}*/
 			// 成功取得意見：回傳OK狀態與意見資訊
 			return Response.ok(gson.toJson(items)).build();
 		} catch (Exception e) {
@@ -132,11 +132,11 @@ public class ColumnService {
 		try {
 			List<ColumnArticle> items = columnDaoImpl.findAll(userId);
 			System.out.println("ColumnArticle.size(): " + items.size());
-			if (items.isEmpty()) {
+			/*if (items.isEmpty()) {
 				return Response.status(Response.Status.NOT_FOUND)
 						.entity(new Result(0, "No column article available"))
 						.build();
-			}
+			}*/
 			// 成功取得意見：回傳OK狀態與意見資訊
 			return Response.ok(gson.toJson(items)).build();
 		} catch (Exception e) {

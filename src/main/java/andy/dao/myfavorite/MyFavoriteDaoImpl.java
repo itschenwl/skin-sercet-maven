@@ -9,15 +9,17 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import aaron.bean.Product;
 import andy.javabean.Article;
 import andy.javabean.activity.Activity;
 import andy.javabean.column.ColumnArticle;
 import andy.javabean.community.CommunityArticle;
-import andy.javabean.product.Product;
-import andy.javabean.user.User;
 import util.ServiceLocator;
 
 public class MyFavoriteDaoImpl implements MyFavoriteDao {
+	public static final String PROD_NO = "PROD_NO";		//	產品編號	CHAR
+	public static final String USER_NO = "USER_NO";				//	用戶編號	CHAR
+	
 	DataSource dataSource;
 
 	public MyFavoriteDaoImpl() {
@@ -27,7 +29,7 @@ public class MyFavoriteDaoImpl implements MyFavoriteDao {
 	@Override
 	public int insertActivity(Integer id, String userId) throws SQLException {
 		String sql = "insert into MFACT (" +
-				Activity.ACTI_NO + ", " + User.USER_NO +
+				Activity.ACTI_NO + ", " + USER_NO +
 			") values(?, ?);";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
@@ -39,7 +41,7 @@ public class MyFavoriteDaoImpl implements MyFavoriteDao {
 
 	@Override
 	public int deleteActivity(Integer id, String userId) throws SQLException {
-		String sql = "delete from MFACT where " + Activity.ACTI_NO + " = ? AND " + User.USER_NO + " = ?;";
+		String sql = "delete from MFACT where " + Activity.ACTI_NO + " = ? AND " + USER_NO + " = ?;";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
 			ps.setInt(1, id);
@@ -92,7 +94,7 @@ public class MyFavoriteDaoImpl implements MyFavoriteDao {
 	@Override
 	public int insertCommunity(Integer id, String userId) throws Exception {
 		String sql = "insert into MFCOMA (" +
-				CommunityArticle.COMM_ARTI_NO + ", " + User.USER_NO +
+				CommunityArticle.COMM_ARTI_NO + ", " + USER_NO +
 			") values(?, ?);";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
@@ -106,7 +108,7 @@ public class MyFavoriteDaoImpl implements MyFavoriteDao {
 	@Override
 	public int deleteCommunity(Integer id, String userId) throws Exception {
 		String sql = "delete from MFCOMA where " +
-				CommunityArticle.COMM_ARTI_NO + " = ? AND " + User.USER_NO + " = ?;";
+				CommunityArticle.COMM_ARTI_NO + " = ? AND " + USER_NO + " = ?;";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
 			ps.setInt(1, id);
@@ -153,7 +155,7 @@ public class MyFavoriteDaoImpl implements MyFavoriteDao {
 	@Override
 	public int insertColumn(Integer id, String userId) throws Exception {
 		String sql = "insert into MFCOLA (" +
-				ColumnArticle.COLU_ARTI_NO + ", " + User.USER_NO +
+				ColumnArticle.COLU_ARTI_NO + ", " + USER_NO +
 			") values(?, ?);";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
@@ -166,7 +168,7 @@ public class MyFavoriteDaoImpl implements MyFavoriteDao {
 	@Override
 	public int deleteColumn(Integer id, String userId) throws Exception {
 		String sql = "delete from MFCOLA where " +
-				ColumnArticle.COLU_ARTI_NO + " = ? AND " + User.USER_NO + " = ?;";
+				ColumnArticle.COLU_ARTI_NO + " = ? AND " + USER_NO + " = ?;";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
 			ps.setInt(1, id);
@@ -211,7 +213,7 @@ public class MyFavoriteDaoImpl implements MyFavoriteDao {
 	@Override
 	public int insertProduct(String id, String userId) throws Exception {
 		String sql = "insert into MFPRO (" +
-				Product.PROD_NO + ", " + User.USER_NO +
+				PROD_NO + ", " + USER_NO +
 			") values(?, ?);";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
@@ -224,7 +226,7 @@ public class MyFavoriteDaoImpl implements MyFavoriteDao {
 	@Override
 	public int deleteProduct(String id, String userId) throws Exception {
 		String sql = "delete from MFPRO where " +
-				Product.PROD_NO + " = ? AND " + User.USER_NO + " = ?;";
+				PROD_NO + " = ? AND " + USER_NO + " = ?;";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
 			ps.setString(1, id);
@@ -235,7 +237,27 @@ public class MyFavoriteDaoImpl implements MyFavoriteDao {
 
 	@Override
 	public List<Product> findProducts(String userId) throws Exception {
-		String sql = "select P.* from MFPRO as M join PROD as P where M.PROD_NO = P.PROD_NO AND M.USER_NO = ?;";
+		String sql = "select res.* from MFPRO as mf left join ("
+				+ "SELECT " + "p.PROD_NO, p.PROD_NAME, p.PROD_INTRO, p.PROD_IMG ,p.PRICE, p.PROD_STATE, p.PROD_COUNT, "
+				+ "b.BRAND_NO, b.BRAND_NAME, b.BRAND_DESC, " + "t.TYPE_NO, t.TYPE_NAME, "
+				+ "GROUP_CONCAT(DISTINCT f.FUNT_NAME) AS FUNTS, "
+				+ "GROUP_CONCAT(DISTINCT i.INGR_NAME) AS INGREDIENTS, "
+				// 從子查詢獲取評價統計
+				+ "e_stats.EVAL_COUNT, " + "e_stats.AVG_SCORE " + "FROM PROD p "
+				// JOIN 品牌資料
+				+ "LEFT JOIN BRAND b ON p.BRAND_NO = b.BRAND_NO "
+				// JOIN 產品類型
+				+ "LEFT JOIN PTYPE t ON p.TYPE_NO = t.TYPE_NO "
+				// JOIN 產品功能關聯表
+				+ "LEFT JOIN PROFUN pf ON p.PROD_NO = pf.PROD_NO " + "LEFT JOIN FUNT f ON pf.FUNT_NO = f.FUNT_NO "
+				// JOIN 產品成分關聯表
+				+ "LEFT JOIN PROING pi ON p.PROD_NO = pi.PROD_NO " + "LEFT JOIN INGR i ON pi.INGR_NO = i.INGR_NO "
+				// 子查詢：計算評價統計
+				+ "LEFT JOIN ( " + "    SELECT PROD_NO, " + "           COUNT(*) AS EVAL_COUNT, " // 統計評價比數
+				+ "           ROUND(IFNULL(AVG(EVAL_LEVEL), 0), 0) AS AVG_SCORE " // 計算平均星星數，無評價時預設為0
+				+ "    FROM EVALUATE " + "    GROUP BY PROD_NO " + ") e_stats ON p.PROD_NO = e_stats.PROD_NO "
+				+ "GROUP BY p.PROD_NO) as res on res.PROD_NO = mf.PROD_NO where mf.USER_NO = ?";
+		
 	List<Product> items = new ArrayList<Product>();
 	try (
 			Connection connection = dataSource.getConnection();
@@ -245,14 +267,30 @@ public class MyFavoriteDaoImpl implements MyFavoriteDao {
 		ResultSet rs = ps.executeQuery();
 		while (rs.next()) {
 			Product product = new Product();
-			product.setId(rs.getString(Product.PROD_NO));
-			product.setBrandId(rs.getInt(Product.BRAND_NO));
-			product.setTypeId(rs.getInt(Product.TYPE_NO));
-			product.setSearchCount(rs.getInt(Product.PROD_COUNT));
-			product.setName(rs.getString(Product.PROD_NAME));
-			product.setState(rs.getInt(Product.PROD_STATE));
-			product.setPrice(rs.getInt(Product.PRICE));
-			product.setIsFavorite(true);
+			product.setProdNo(rs.getString("PROD_NO"));
+			product.setProdName(rs.getString("PROD_NAME"));
+			product.setProdIntro(rs.getString("PROD_INTRO"));
+
+			product.setPrice(rs.getInt("PRICE"));
+			product.setProdState(rs.getInt("PROD_STATE"));
+			product.setProdCount(rs.getInt("PROD_COUNT"));
+			product.setBrandNo(rs.getInt("BRAND_NO"));
+			product.setBrandName(rs.getString("BRAND_NAME"));
+			product.setBrandDesc(rs.getString("BRAND_DESC"));
+			product.setTypeNo(rs.getInt("TYPE_NO"));
+			product.setTypeName(rs.getString("TYPE_NAME"));
+            product.setProdImg(rs.getString("PROD_IMG"));
+
+
+			product.setFuntName(rs.getString("FUNTS"));
+			product.setIngrName(rs.getString("INGREDIENTS"));
+
+			// 評價
+			product.setEvalCount(rs.getInt("EVAL_COUNT"));
+			product.setAvgScore(rs.getInt("AVG_SCORE"));
+			
+			product.setIsCollection(true);
+
 			items.add(product);
 		}
 	} 
