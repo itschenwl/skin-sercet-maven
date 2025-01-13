@@ -15,12 +15,12 @@ import javax.ws.rs.core.Response;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import aaron.bean.Product;
 import andy.dao.myfavorite.MyFavoriteDaoImpl;
 import andy.javabean.Favorite;
 import andy.javabean.activity.Activity;
 import andy.javabean.column.ColumnArticle;
 import andy.javabean.community.CommunityArticle;
-import andy.javabean.product.Product;
 import util.Result;
 
 @Path("/user/favorite")
