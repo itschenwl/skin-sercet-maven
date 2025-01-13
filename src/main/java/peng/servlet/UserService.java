@@ -43,10 +43,36 @@ public class UserService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	// 修改user
-	public Response update(User user) {
+	public Response update(
+//			 @QueryParam("userNo") String userNo,
+//			 @QueryParam("userAvatar") String userAvatar,
+//			 @QueryParam("nickname") String nickname,
+//			 @QueryParam("name") String name,
+//			 @QueryParam("sex") Integer sex,
+//			 @QueryParam("telNumber") String telNumber,
+//			 @QueryParam("email") String email,
+//			 @QueryParam("birthday") String birthday,
+//			 @QueryParam("password") String password,
+//			 @QueryParam("personalInfo") String personalInfo,
+//			 @QueryParam("ig") String ig
+			User user
+			) {
+		// 列印上傳資訊，除錯用
+				System.out.println("UserNo: " + user.getUserNo() );
+				System.out.println("Password: " + user.getPassword());
+				System.out.println("Sex: " + user.getSex());
+				System.out.println("object: " + user.getNickname());
+				System.out.println("object: " + user.getName());
 		try {
-			userDaoImpl.update(user);
-			return Response.ok(new Result(0, "User updated successfully")).build();
+//			User user = new User();
+			int result = userDaoImpl.update(user);
+			if (result > 0) {
+				return Response.ok(new Result(0, "User updated successfully"))
+						.build();
+			}
+			return Response.status(Response.Status.NOT_FOUND)
+                    .entity(new Result(0, "Feedback updated failed"))
+                    .build();
 		} catch (Exception e) {
 			// 處理執行錯誤
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -55,22 +81,22 @@ public class UserService {
 		}
 	}
 	
-	@PUT
-	@Path("/userIntro")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	// 修改user
-	public Response updateIntro(User user) {
-		try {
-			userDaoImpl.IntroUpdate(user);
-			return Response.ok(new Result(0, "User updated successfully")).build();
-		} catch (Exception e) {
-			// 處理執行錯誤
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(new Result(0, e.getMessage()))
-                    .build();
-		}
-	}
+//	@PUT
+//	@Path("/userIntro")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	@Produces(MediaType.APPLICATION_JSON)
+//	// 修改user
+//	public Response updateIntro(User user) {
+//		try {
+//			userDaoImpl.IntroUpdate(user);
+//			return Response.ok(new Result(0, "User updated successfully")).build();
+//		} catch (Exception e) {
+//			// 處理執行錯誤
+//            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+//                    .entity(new Result(0, e.getMessage()))
+//                    .build();
+//		}
+//	}
 	
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
