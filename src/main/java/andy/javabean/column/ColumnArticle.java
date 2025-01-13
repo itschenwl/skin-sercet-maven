@@ -17,6 +17,7 @@ public class ColumnArticle {
 	private int id;
 	private int artColId;
 	private String userId;
+	private String userNickName;
 	private Article article;
 	private Boolean isFavorite;        // 是否喜歡
 	private Integer favoriteCount;         // 喜歡人數

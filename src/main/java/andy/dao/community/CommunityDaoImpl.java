@@ -88,7 +88,9 @@ public class CommunityDaoImpl implements CommunityDao {
 
 	@Override
 	public List<ArticleComment> findAllComment(Integer artId) throws SQLException {
-		String sql = "select * from " + TABLE_NAME + " where " + COMM_ARTI_NO + " = ?;";
+		String sql = "select U.NICK_NAME, CC.* from " + TABLE_NAME + " as CC "
+				+ "left join USER_NUMB as U on CC.USER_NO = U.USER_NO "
+				+ "where " + COMM_ARTI_NO + " = ?;";
 		List<ArticleComment> items = new ArrayList<ArticleComment>();
 		try (
 				Connection connection = dataSource.getConnection();
@@ -101,6 +103,7 @@ public class CommunityDaoImpl implements CommunityDao {
 				item.setId(rs.getInt(COMM_COMM_NO));
 				item.setArtId(rs.getInt(COMM_ARTI_NO));
 				item.setUserId(rs.getString(USER_NO));
+				item.setUserNickName(rs.getString("NICK_NAME"));
 				Comment comment = new Comment();
 				Message message = new Message();
 				message.setMessage(rs.getString(COM_CON));
@@ -166,10 +169,11 @@ public class CommunityDaoImpl implements CommunityDao {
 
 	@Override
 	public List<CommunityArticle> findAll(String userId) throws SQLException {
-		String sql = "select CA.*, (CASE WHEN M.USER_NO IS NOT NULL THEN true ELSE false END) as isCollection ," +
+		String sql = "select U.NICK_NAME, CA.*, (CASE WHEN M.USER_NO IS NOT NULL THEN true ELSE false END) as isCollection ," +
 				" (select COUNT(*) from COMM_COMM AS CC where CC.COMM_ARTI_NO = CA.COMM_ARTI_NO) as commcount" +
 				" from " + CommunityArticle.TABLE_NAME + " as CA left join " +
-				" (select * from MFCOMA where USER_NO = ?) as M on CA.COMM_ARTI_NO = M.COMM_ARTI_NO;";
+				" (select * from MFCOMA where USER_NO = ?) as M on CA.COMM_ARTI_NO = M.COMM_ARTI_NO"
+				+ " left join USER_NUMB as U on CA.USER_NO = U.USER_NO;";
 		List<CommunityArticle> items = new ArrayList<CommunityArticle>();
 		try (
 				Connection connection = dataSource.getConnection();
@@ -182,6 +186,7 @@ public class CommunityDaoImpl implements CommunityDao {
 				item.setId(rs.getInt(CommunityArticle.COMM_ARTI_NO));
 				//item.setCommId(rs.getInt(CommunityArticle.COMM_NO));
 				item.setUserId(rs.getString(CommunityArticle.USER_NO));
+				item.setUserNickName(rs.getString("NICK_NAME"));
 				Article article = new Article();
 				article.setTitle(rs.getString(CommunityArticle.COMM_ARTI_NAME));
 				article.setContent(rs.getString(CommunityArticle.COMM_ARTI_CONT));
