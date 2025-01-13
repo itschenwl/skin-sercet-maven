@@ -7,8 +7,8 @@ public interface UserDao<T>{
 	
 	User validate(String username, String password) throws Exception;
 
-	void update(User user) throws Exception;
+	int update(User user) throws Exception;
 
-	void IntroUpdate(User user) throws Exception;
+//	void IntroUpdate(User user) throws Exception;
 	
 }
