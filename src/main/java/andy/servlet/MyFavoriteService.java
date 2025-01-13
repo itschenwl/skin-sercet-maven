@@ -15,12 +15,12 @@ import javax.ws.rs.core.Response;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import aaron.bean.Product;
 import andy.dao.myfavorite.MyFavoriteDaoImpl;
 import andy.javabean.Favorite;
 import andy.javabean.activity.Activity;
 import andy.javabean.column.ColumnArticle;
 import andy.javabean.community.CommunityArticle;
-import andy.javabean.product.Product;
 import util.Result;
 
 @Path("/user/favorite")
@@ -47,11 +47,11 @@ public class MyFavoriteService {
 			if (userId != null && !userId.isEmpty()) {
 				List<Activity> activities = favoriteDaoImpl.findActivities(userId);
 				System.out.println("activities.size(): " + activities.size());
-				if (activities.isEmpty()) {
+				/*if (activities.isEmpty()) {
 					return Response.status(Response.Status.NOT_FOUND)
 							.entity(new Result(0, "No favorite activities available"))
 							.build();
-				}
+				}*/
 				// 成功取得意見：回傳OK狀態與意見資訊
 				return Response.ok(gson.toJson(activities)).build();
 			}
@@ -124,11 +124,11 @@ public class MyFavoriteService {
 			if (userId != null && !userId.isEmpty()) {
 				List<CommunityArticle> communities = favoriteDaoImpl.findCommunities(userId);
 				System.out.println("communities.size(): " + communities.size());
-				if (communities.isEmpty()) {
+				/*if (communities.isEmpty()) {
 					return Response.status(Response.Status.NOT_FOUND)
 							.entity(new Result(0, "No favorite communities available"))
 							.build();
-				}
+				}*/
 				// 成功取得意見：回傳OK狀態與意見資訊
 				return Response.ok(gson.toJson(communities)).build();
 			}
@@ -201,11 +201,11 @@ public class MyFavoriteService {
 			if (userId != null && !userId.isEmpty()) {
 				List<ColumnArticle> columns = favoriteDaoImpl.findColumns(userId);
 				System.out.println("communities.size(): " + columns.size());
-				if (columns.isEmpty()) {
+				/*if (columns.isEmpty()) {
 					return Response.status(Response.Status.NOT_FOUND)
 							.entity(new Result(0, "No favorite columns available"))
 							.build();
-				}
+				}*/
 				// 成功取得意見：回傳OK狀態與意見資訊
 				return Response.ok(gson.toJson(columns)).build();
 			}
@@ -278,11 +278,11 @@ public class MyFavoriteService {
 			if (userId != null && !userId.isEmpty()) {
 				List<Product> products = favoriteDaoImpl.findProducts(userId);
 				System.out.println("communities.size(): " + products.size());
-				if (products.isEmpty()) {
+				/*if (products.isEmpty()) {
 					return Response.status(Response.Status.NOT_FOUND)
 							.entity(new Result(0, "No favorite products available"))
 							.build();
-				}
+				}*/
 				// 成功取得意見：回傳OK狀態與意見資訊
 				return Response.ok(gson.toJson(products)).build();
 			}

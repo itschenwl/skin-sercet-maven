@@ -8,7 +8,8 @@ import org.glassfish.jersey.server.ResourceConfig;
 public class RootApplication extends ResourceConfig {
     public RootApplication() {
     	// packages 指定專案 package
-        packages("andy.servlet");
+        packages("andy.servlet", "peng.servlet");
+        
         // 註冊要使用multipart功能
         register(org.glassfish.jersey.media.multipart.MultiPartFeature.class);
     }

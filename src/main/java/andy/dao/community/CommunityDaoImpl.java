@@ -10,16 +10,21 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import andy.javabean.Article;
+import andy.javabean.ArticleComment;
 import andy.javabean.Comment;
 import andy.javabean.Message;
-import andy.javabean.column.ColumnArticle;
-import andy.javabean.column.ColumnComment;
 import andy.javabean.community.CommunityArticle;
-import andy.javabean.community.CommunityComment;
 import util.ServiceLocator;
 
 public class CommunityDaoImpl implements CommunityDao {
-
+	public static final String TABLE_NAME = "COMM_COMM";
+	public static final String COMM_COMM_NO = "COMM_COMM_NO";		//	社群留言編號	INT
+	public static final String COMM_ARTI_NO = "COMM_ARTI_NO";		//	社群文章編號	INT
+	public static final String USER_NO = "USER_NO";		//	用戶編號	CHAR
+	public static final String COM_DATE = "COM_DATE";		//	留言日期	DATETIME
+	public static final String COM_CON = "COM_CON";		//	留言內容	LONGTEXT
+	public static final String REP_DATE = "REP_DATE";		//	官方回覆日期	DATETIME
+	public static final String REP_CON = "REP_CON";		//	官方回覆內容	LONGTEXT
 	DataSource dataSource;
 
 	public CommunityDaoImpl() {
@@ -27,15 +32,15 @@ public class CommunityDaoImpl implements CommunityDao {
 	}
 
 	@Override
-	public int insert(CommunityComment item) throws SQLException {
-		String sql = "insert into " + CommunityComment.TABLE_NAME + " (" +
-				CommunityComment.COMM_ARTI_NO + ", " + CommunityComment.USER_NO + ", " + 
-				CommunityComment.COM_DATE + ", " + CommunityComment.COM_CON + ", " +
-				CommunityComment.REP_DATE + ", " + CommunityComment.REP_CON +
+	public int insert(ArticleComment item) throws SQLException {
+		String sql = "insert into " + TABLE_NAME + " (" +
+				COMM_ARTI_NO + ", " + USER_NO + ", " + 
+				COM_DATE + ", " + COM_CON + ", " +
+				REP_DATE + ", " + REP_CON +
 			") values(?, ?, ?, ?, ?, ?);";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
-			ps.setInt(1, item.getComArtId());
+			ps.setInt(1, item.getArtId());
 			ps.setString(2, item.getUserId());
 			Comment comment = item.getComment();
 			Message message = comment.getComment();
@@ -49,15 +54,15 @@ public class CommunityDaoImpl implements CommunityDao {
 	}
 
 	@Override
-	public int update(CommunityComment item) throws SQLException {
-		String sql = "update " + CommunityComment.TABLE_NAME + " set " + 
-				CommunityComment.COMM_ARTI_NO + " = ?, " + CommunityComment.USER_NO + " = ?, " + 
-				CommunityComment.COM_DATE + " = ?, " + CommunityComment.COM_CON + " = ?, " +
-				CommunityComment.REP_DATE + " = ?, " + CommunityComment.REP_CON + " = ?" +
-				" where " + CommunityComment.COMM_COMM_NO + " = ?;";
+	public int update(ArticleComment item) throws SQLException {
+		String sql = "update " + TABLE_NAME + " set " + 
+				COMM_ARTI_NO + " = ?, " + USER_NO + " = ?, " + 
+				COM_DATE + " = ?, " + COM_CON + " = ?, " +
+				REP_DATE + " = ?, " + REP_CON + " = ?" +
+				" where " + COMM_COMM_NO + " = ?;";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
-			ps.setInt(1, item.getComArtId());
+			ps.setInt(1, item.getArtId());
 			ps.setString(2, item.getUserId());
 			Comment comment = item.getComment();
 			Message message = comment.getComment();
@@ -73,7 +78,7 @@ public class CommunityDaoImpl implements CommunityDao {
 
 	@Override
 	public int deleteComment(Integer id) throws SQLException {
-		String sql = "delete from " + CommunityComment.TABLE_NAME + " where " + CommunityComment.COMM_COMM_NO + " = ?;";
+		String sql = "delete from " + TABLE_NAME + " where " + COMM_COMM_NO + " = ?;";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
 			ps.setInt(1, id);
@@ -82,9 +87,9 @@ public class CommunityDaoImpl implements CommunityDao {
 	}
 
 	@Override
-	public List<CommunityComment> findAllComment(Integer artId) throws SQLException {
-		String sql = "select * from " + CommunityComment.TABLE_NAME + " where " + CommunityComment.COMM_COMM_NO + " = ?;";
-		List<CommunityComment> items = new ArrayList<CommunityComment>();
+	public List<ArticleComment> findAllComment(Integer artId) throws SQLException {
+		String sql = "select * from " + TABLE_NAME + " where " + COMM_ARTI_NO + " = ?;";
+		List<ArticleComment> items = new ArrayList<ArticleComment>();
 		try (
 				Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);
@@ -92,24 +97,71 @@ public class CommunityDaoImpl implements CommunityDao {
 			ps.setInt(1, artId);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				CommunityComment item = new CommunityComment();
-				item.setId(rs.getInt(CommunityComment.COMM_COMM_NO));
-				item.setComArtId(rs.getInt(CommunityComment.COMM_ARTI_NO));
-				item.setUserId(rs.getString(CommunityComment.USER_NO));
+				ArticleComment item = new ArticleComment();
+				item.setId(rs.getInt(COMM_COMM_NO));
+				item.setArtId(rs.getInt(COMM_ARTI_NO));
+				item.setUserId(rs.getString(USER_NO));
 				Comment comment = new Comment();
 				Message message = new Message();
-				message.setMessage(rs.getString(CommunityComment.COM_CON));
-				message.setUpdateDate(rs.getTimestamp(CommunityComment.COM_DATE));
+				message.setMessage(rs.getString(COM_CON));
+				message.setUpdateDate(rs.getTimestamp(COM_DATE));
 				comment.setComment(message);
 				Message reply = new Message();
-				reply.setMessage(rs.getString(CommunityComment.REP_CON));
-				reply.setUpdateDate(rs.getTimestamp(CommunityComment.REP_DATE));
+				reply.setMessage(rs.getString(REP_CON));
+				reply.setUpdateDate(rs.getTimestamp(REP_DATE));
 				comment.setReply(reply);
 				item.setComment(comment);
 				items.add(item);
 			}
 		} 
 		return items;
+	}
+
+	@Override
+	public int insert(CommunityArticle item) throws SQLException {
+		String sql = "insert into " + CommunityArticle.TABLE_NAME + " (" +
+				CommunityArticle.USER_NO + ", " + 
+				CommunityArticle.COMM_ARTI_NAME + ", " + CommunityArticle.COMM_ARTI_CONT + ", " +
+				CommunityArticle.COMM_PUB_DATE +
+			") values(?, ?, ?, ?);";
+		try (Connection connection = dataSource.getConnection();
+				PreparedStatement ps = connection.prepareStatement(sql);) {
+			ps.setString(1, item.getUserId());
+			Article article = item.getComment();
+			ps.setString(2, article.getTitle());
+			ps.setString(3, article.getContent());
+			ps.setTimestamp(4, article.getPostDate());
+			return ps.executeUpdate();
+		}
+	}
+
+	@Override
+	public int update(CommunityArticle item) throws SQLException {
+		String sql = "update " + CommunityArticle.TABLE_NAME + " set " + 
+				CommunityArticle.USER_NO + " = ?, " + 
+				CommunityArticle.COMM_ARTI_NAME + " = ?, " + CommunityArticle.COMM_ARTI_CONT + " = ?, " +
+				CommunityArticle.COMM_PUB_DATE + " = ?" +
+				" where " + CommunityArticle.COMM_ARTI_NO + " = ?;";
+		try (Connection connection = dataSource.getConnection();
+				PreparedStatement ps = connection.prepareStatement(sql);) {
+			ps.setString(1, item.getUserId());
+			Article article = item.getComment();
+			ps.setString(2, article.getTitle());
+			ps.setString(3, article.getContent());
+			ps.setTimestamp(4, article.getPostDate());
+			ps.setInt(5, item.getId());
+			return ps.executeUpdate();
+		}
+	}
+
+	@Override
+	public int deleteArticle(Integer id) throws SQLException {
+		String sql = "delete from " + CommunityArticle.TABLE_NAME + " where " + CommunityArticle.COMM_ARTI_NO + " = ?;";
+		try (Connection connection = dataSource.getConnection();
+				PreparedStatement ps = connection.prepareStatement(sql);) {
+			ps.setInt(1, id);
+			return ps.executeUpdate();
+		}
 	}
 
 	@Override

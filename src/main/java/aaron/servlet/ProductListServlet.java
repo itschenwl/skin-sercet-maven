@@ -29,11 +29,14 @@ public class ProductListServlet extends HttpServlet {
 
         resp.setContentType("application/json; charset=UTF-8");
         resp.setCharacterEncoding("UTF-8");
-
-        // 查詢所有產品
-        List<Product> products = productDaoImpl.selectAll();
-
-        String json = gson.toJson(products);
-        resp.getWriter().write(json);
+        
+        String userId = req.getParameter("userId");
+        if (userId != null && !userId.isEmpty()) {
+	        // 查詢所有產品
+	        List<Product> products = productDaoImpl.selectAll(userId);
+	
+	        String json = gson.toJson(products);
+	        resp.getWriter().write(json);
+        }
     }
 }
