@@ -2,10 +2,10 @@ package andy.dao.myfavorite;
 
 import java.util.List;
 
+import aaron.bean.Product;
 import andy.javabean.activity.Activity;
 import andy.javabean.column.ColumnArticle;
 import andy.javabean.community.CommunityArticle;
-import andy.javabean.product.Product;
 
 public interface MyFavoriteDao {
 	
