@@ -14,11 +14,11 @@ import andy.javabean.Article;
 import andy.javabean.activity.Activity;
 import andy.javabean.column.ColumnArticle;
 import andy.javabean.community.CommunityArticle;
-import andy.javabean.user.User;
 import util.ServiceLocator;
 
 public class MyFavoriteDaoImpl implements MyFavoriteDao {
 	public static final String PROD_NO = "PROD_NO";		//	產品編號	CHAR
+	public static final String USER_NO = "USER_NO";				//	用戶編號	CHAR
 	
 	DataSource dataSource;
 
@@ -29,7 +29,7 @@ public class MyFavoriteDaoImpl implements MyFavoriteDao {
 	@Override
 	public int insertActivity(Integer id, String userId) throws SQLException {
 		String sql = "insert into MFACT (" +
-				Activity.ACTI_NO + ", " + User.USER_NO +
+				Activity.ACTI_NO + ", " + USER_NO +
 			") values(?, ?);";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
@@ -41,7 +41,7 @@ public class MyFavoriteDaoImpl implements MyFavoriteDao {
 
 	@Override
 	public int deleteActivity(Integer id, String userId) throws SQLException {
-		String sql = "delete from MFACT where " + Activity.ACTI_NO + " = ? AND " + User.USER_NO + " = ?;";
+		String sql = "delete from MFACT where " + Activity.ACTI_NO + " = ? AND " + USER_NO + " = ?;";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
 			ps.setInt(1, id);
@@ -94,7 +94,7 @@ public class MyFavoriteDaoImpl implements MyFavoriteDao {
 	@Override
 	public int insertCommunity(Integer id, String userId) throws Exception {
 		String sql = "insert into MFCOMA (" +
-				CommunityArticle.COMM_ARTI_NO + ", " + User.USER_NO +
+				CommunityArticle.COMM_ARTI_NO + ", " + USER_NO +
 			") values(?, ?);";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
@@ -108,7 +108,7 @@ public class MyFavoriteDaoImpl implements MyFavoriteDao {
 	@Override
 	public int deleteCommunity(Integer id, String userId) throws Exception {
 		String sql = "delete from MFCOMA where " +
-				CommunityArticle.COMM_ARTI_NO + " = ? AND " + User.USER_NO + " = ?;";
+				CommunityArticle.COMM_ARTI_NO + " = ? AND " + USER_NO + " = ?;";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
 			ps.setInt(1, id);
@@ -155,7 +155,7 @@ public class MyFavoriteDaoImpl implements MyFavoriteDao {
 	@Override
 	public int insertColumn(Integer id, String userId) throws Exception {
 		String sql = "insert into MFCOLA (" +
-				ColumnArticle.COLU_ARTI_NO + ", " + User.USER_NO +
+				ColumnArticle.COLU_ARTI_NO + ", " + USER_NO +
 			") values(?, ?);";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
@@ -168,7 +168,7 @@ public class MyFavoriteDaoImpl implements MyFavoriteDao {
 	@Override
 	public int deleteColumn(Integer id, String userId) throws Exception {
 		String sql = "delete from MFCOLA where " +
-				ColumnArticle.COLU_ARTI_NO + " = ? AND " + User.USER_NO + " = ?;";
+				ColumnArticle.COLU_ARTI_NO + " = ? AND " + USER_NO + " = ?;";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
 			ps.setInt(1, id);
@@ -213,7 +213,7 @@ public class MyFavoriteDaoImpl implements MyFavoriteDao {
 	@Override
 	public int insertProduct(String id, String userId) throws Exception {
 		String sql = "insert into MFPRO (" +
-				PROD_NO + ", " + User.USER_NO +
+				PROD_NO + ", " + USER_NO +
 			") values(?, ?);";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
@@ -226,7 +226,7 @@ public class MyFavoriteDaoImpl implements MyFavoriteDao {
 	@Override
 	public int deleteProduct(String id, String userId) throws Exception {
 		String sql = "delete from MFPRO where " +
-				PROD_NO + " = ? AND " + User.USER_NO + " = ?;";
+				PROD_NO + " = ? AND " + USER_NO + " = ?;";
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement ps = connection.prepareStatement(sql);) {
 			ps.setString(1, id);
