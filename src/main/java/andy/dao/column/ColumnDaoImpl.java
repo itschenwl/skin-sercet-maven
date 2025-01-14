@@ -90,7 +90,9 @@ public class ColumnDaoImpl implements ColumnDao {
 
 	@Override
 	public List<ArticleComment> findAllComment(Integer artId) throws Exception {
-		String sql = "select * from " + TABLE_NAME + " where " + COLU_ARTI_NO + " = ?;";
+		String sql = "select U.NICK_NAME, CC.* from " + TABLE_NAME + " as CC "
+				+ "left join USER_NUMB as U on CC.USER_NO = U.USER_NO "
+				+ "where " + COLU_ARTI_NO + " = ?;";
 		List<ArticleComment> items = new ArrayList<ArticleComment>();
 		try (
 				Connection connection = dataSource.getConnection();
@@ -103,6 +105,7 @@ public class ColumnDaoImpl implements ColumnDao {
 				item.setId(rs.getInt(COLU_COMM_NO));
 				item.setArtId(rs.getInt(COLU_ARTI_NO));
 				item.setUserId(rs.getString(USER_NO));
+				item.setUserNickName(rs.getString("NICK_NAME"));
 				Comment comment = new Comment();
 				Message message = new Message();
 				message.setMessage(rs.getString(COLU_COMM_COM_CONT));
@@ -121,10 +124,11 @@ public class ColumnDaoImpl implements ColumnDao {
 	
 	@Override
 	public List<ColumnArticle> findAll(String userId) throws SQLException {
-		String sql = "select CA.*, (CASE WHEN M.USER_NO IS NOT NULL THEN true ELSE false END) as isCollection,"
+		String sql = "select U.NICK_NAME, CA.*, (CASE WHEN M.USER_NO IS NOT NULL THEN true ELSE false END) as isCollection,"
 				+ " (select COUNT(*) from COLU_COMM AS CC where CC.COLU_ARTI_NO = CA.COLU_ARTI_NO) as commcount"
 				+ " from " + ColumnArticle.TABLE_NAME + " as CA left join"
-				+ " (select * from MFCOLA where USER_NO = ?) as M on CA.COLU_ARTI_NO = M.COLU_ARTI_NO;";
+				+ " (select * from MFCOLA where USER_NO = ?) as M on CA.COLU_ARTI_NO = M.COLU_ARTI_NO "
+				+ "left join USER_NUMB as U on CA.USER_NO = U.USER_NO;";
 		List<ColumnArticle> items = new ArrayList<ColumnArticle>();
 		try (
 				Connection connection = dataSource.getConnection();
@@ -137,6 +141,7 @@ public class ColumnDaoImpl implements ColumnDao {
 				item.setId(rs.getInt(ColumnArticle.COLU_ARTI_NO));
 				item.setArtColId(rs.getInt(ColumnArticle.ARTI_COLU_NO));
 				item.setUserId(rs.getString(ColumnArticle.USER_NO));
+				item.setUserNickName(rs.getString("NICK_NAME"));
 				Article article = new Article();
 				article.setTitle(rs.getString(ColumnArticle.COLU_ARTI_NAME));
 				article.setContent(rs.getString(ColumnArticle.COLU_ARTI_CONT));

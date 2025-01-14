@@ -119,9 +119,10 @@ public class MyFavoriteDaoImpl implements MyFavoriteDao {
 
 	@Override
 	public List<CommunityArticle> findCommunities(String userId) throws Exception {
-		String sql = "select (select COUNT(*) from COMM_COMM AS CC where CC.COMM_ARTI_NO = C.COMM_ARTI_NO) as commcount ,"
+		String sql = "select U.NICK_NAME, (select COUNT(*) from COMM_COMM AS CC where CC.COMM_ARTI_NO = C.COMM_ARTI_NO) as commcount ,"
 				+ " C.*"
 				+ " from MFCOMA as M join COMM_ARTI as C"
+				+ " left join USER_NUMB as U on C.USER_NO = U.USER_NO"
 				+ " where M.COMM_ARTI_NO = C.COMM_ARTI_NO AND M.USER_NO = ?;";
 		List<CommunityArticle> items = new ArrayList<CommunityArticle>();
 		try (
@@ -135,6 +136,7 @@ public class MyFavoriteDaoImpl implements MyFavoriteDao {
 				community.setId(rs.getInt(CommunityArticle.COMM_ARTI_NO));
 				//community.setCommId(rs.getInt(CommunityArticle.COMM_NO));
 				community.setUserId(rs.getString(CommunityArticle.USER_NO));
+				community.setUserNickName(rs.getString("NICK_NAME"));
 				Article article = new Article();
 				article.setTitle(rs.getString(CommunityArticle.COMM_ARTI_NAME));
 				article.setContent(rs.getString(CommunityArticle.COMM_ARTI_CONT));
@@ -179,8 +181,11 @@ public class MyFavoriteDaoImpl implements MyFavoriteDao {
 
 	@Override
 	public List<ColumnArticle> findColumns(String userId) throws Exception {
-		String sql = "select (select COUNT(*) from COLU_COMM AS CC where CC.COLU_ARTI_NO = C.COLU_ARTI_NO) as commcount," +
-				" C.* from MFCOLA as M join COLU_ARTI as C where M.COLU_ARTI_NO = C.COLU_ARTI_NO AND M.USER_NO = ?;";
+		String sql = "select  U.NICK_NAME, "
+				+ "(select COUNT(*) from COLU_COMM AS CC where CC.COLU_ARTI_NO = C.COLU_ARTI_NO) as commcount, "
+				+ "C.* from MFCOLA as M join COLU_ARTI as C "
+				+ "left join USER_NUMB as U on U.USER_NO = C.USER_NO "
+				+ "where M.COLU_ARTI_NO = C.COLU_ARTI_NO AND M.USER_NO = ?;";
 	List<ColumnArticle> items = new ArrayList<ColumnArticle>();
 	try (
 			Connection connection = dataSource.getConnection();
@@ -193,6 +198,7 @@ public class MyFavoriteDaoImpl implements MyFavoriteDao {
 			column.setId(rs.getInt(ColumnArticle.COLU_ARTI_NO));
 			column.setArtColId(rs.getInt(ColumnArticle.ARTI_COLU_NO));
 			column.setUserId(rs.getString(ColumnArticle.USER_NO));
+			column.setUserNickName(rs.getString("NICK_NAME"));
 			Article article = new Article();
 			article.setTitle(rs.getString(ColumnArticle.COLU_ARTI_NAME));
 			article.setContent(rs.getString(ColumnArticle.COLU_ARTI_CONT));

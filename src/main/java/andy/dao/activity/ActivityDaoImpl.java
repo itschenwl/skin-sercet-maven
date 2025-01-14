@@ -89,7 +89,9 @@ public class ActivityDaoImpl implements ActivityDao {
 
 	@Override
 	public List<ArticleComment> findAllComment(Integer actId) throws Exception {
-		String sql = "select * from " + TABLE_NAME + " where " + ACTI_NO + " = ?;";
+		String sql = "select U.NICK_NAME, AC.* from " + TABLE_NAME + " as AC "
+				+ "left join USER_NUMB as U on AC.USER_NO = U.USER_NO "
+				+ " where " + ACTI_NO + " = ?;";
 		List<ArticleComment> items = new ArrayList<ArticleComment>();
 		try (
 				Connection connection = dataSource.getConnection();
@@ -102,6 +104,7 @@ public class ActivityDaoImpl implements ActivityDao {
 				item.setId(rs.getInt(ACTI_COMM_NO));
 				item.setArtId(rs.getInt(ACTI_NO));
 				item.setUserId(rs.getString(USER_NO));
+				item.setUserNickName(rs.getString("NICK_NAME"));
 				Comment comment = new Comment();
 				Message message = new Message();
 				message.setMessage(rs.getString(COM_CON));
