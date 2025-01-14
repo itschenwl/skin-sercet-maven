@@ -40,8 +40,8 @@ public class UserDaoImpl implements UserDao{
 			        rs.getString(User.IG) != null ? rs.getString(User.IG) : "", // IG 允許 NULL，處理為空字串
 //			        rs.getInt(User.STATE), // STATE 預設值 1，不為 NULL
 //			        rs.getBoolean(User.PASS), // PASS 預設值 false，不為 NULL
-			        rs.getString(User.PERSONAL_INFO) != null ? rs.getString(User.PERSONAL_INFO) : "",
-			        rs.getString(User.AVATAR) != null ? rs.getString(User.AVATAR) : ""
+			        rs.getString(User.PERSONAL_INFO) != null ? rs.getString(User.PERSONAL_INFO) : ""
+//			        rs.getString(User.AVATAR) != null ? rs.getString(User.AVATAR) : ""
 					);
 					return user;
 				}
@@ -110,7 +110,7 @@ public class UserDaoImpl implements UserDao{
 	@Override
 	public int update(User user) throws SQLException {
 		String sql = "update "+ User.TABLE_NAME + " set "
-					+ User.AVATAR + " = ?, " 
+//					+ User.AVATAR + " = ?, " 
 					+ User.NICK_NAME + " = ?, " 
 					+ User.FULL_NAME + " = ?, " 
 					+ User.SEX + " = ?, " 
@@ -134,17 +134,17 @@ public class UserDaoImpl implements UserDao{
 //			ps.setString(9, user.getPersonalInfo());
 //			ps.setString(10, user.getIg());
 //			ps.setString(11, user.getUserNo());
-			ps.setString(1, user.getAvatar() != null ? user.getAvatar() : null);
-			ps.setString(2, user.getNickname() != null ? user.getNickname() : null);
-			ps.setString(3, user.getName() != null ? user.getName() : null);
-			ps.setObject(4, user.getSex() != null ? user.getSex() : null, java.sql.Types.INTEGER);
-			ps.setString(5, user.getTelNumber() != null ? user.getTelNumber() : null);
-			ps.setString(6, user.getEmail() != null ? user.getEmail() : null);
-			ps.setTimestamp(7, user.getBirthday() != null ? user.getBirthday() : null);
-			ps.setString(8, user.getPassword() != null ? user.getPassword() : null);
-			ps.setString(9, user.getPersonalInfo() != null ? user.getPersonalInfo() : null);
-			ps.setString(10, user.getIg() != null ? user.getIg() : null);
-			ps.setString(11, user.getUserNo());
+//			ps.setString(1, user.getAvatar() != null ? user.getAvatar() : null);
+			ps.setString(1, user.getNickname() != null ? user.getNickname() : null);
+			ps.setString(2, user.getName() != null ? user.getName() : null);
+			ps.setObject(3, user.getSex() != null ? user.getSex() : null, java.sql.Types.INTEGER);
+			ps.setString(4, user.getTelNumber() != null ? user.getTelNumber() : null);
+			ps.setString(5, user.getEmail() != null ? user.getEmail() : null);
+			ps.setTimestamp(6, user.getBirthday() != null ? user.getBirthday() : null);
+			ps.setString(7, user.getPassword() != null ? user.getPassword() : null);
+			ps.setString(8, user.getPersonalInfo() != null ? user.getPersonalInfo() : null);
+			ps.setString(9, user.getIg() != null ? user.getIg() : null);
+			ps.setString(10, user.getUserNo());
 			return ps.executeUpdate();
 		}
 	}
@@ -175,8 +175,8 @@ public class UserDaoImpl implements UserDao{
 				        rs.getString(User.IG) != null ? rs.getString(User.IG) : "", // IG 允許 NULL，處理為空字串
 //				        rs.getInt(User.STATE), // STATE 預設值 1，不為 NULL
 //				        rs.getBoolean(User.PASS), // PASS 預設值 false，不為 NULL
-				        rs.getString(User.PERSONAL_INFO) != null ? rs.getString(User.PERSONAL_INFO) : "",
-				        rs.getString(User.AVATAR) != null ? rs.getString(User.AVATAR) : ""
+				        rs.getString(User.PERSONAL_INFO) != null ? rs.getString(User.PERSONAL_INFO) : ""
+//				        rs.getString(User.AVATAR) != null ? rs.getString(User.AVATAR) : ""
 				    );
 			}
 		} 
