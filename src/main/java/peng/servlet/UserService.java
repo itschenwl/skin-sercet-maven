@@ -129,6 +129,10 @@ public class UserService {
 	@GET 
 	@Produces(MediaType.APPLICATION_JSON) // 輸出資料轉成JSON
 	public Response validate(@QueryParam("userNo") String userNo, @QueryParam("password") String password) {
+		// 列印上傳資訊，除錯用
+		System.out.println("UserNo: " + userNo);
+		System.out.println("Password: " + password);
+		
 		try {
 			User user = userDaoImpl.validate(userNo, password);
 			if (user == null) {

@@ -36,7 +36,7 @@ public User(
         String userNo, String name, String password,
         String nickname, String telNumber, Timestamp birthday,
         Integer sex, String email, String ig, 
-        String personalInfo, String avatar) {
+        String personalInfo) {
     super();
     this.userNo = userNo;
     this.name = name;
@@ -51,7 +51,7 @@ public User(
 //    this.state = state;
 //    this.pass = pass;
     this.personalInfo = personalInfo;
-    this.avatar = avatar;
+//    this.avatar = avatar;
 }
 
 	
@@ -69,7 +69,7 @@ public User(
 //    private Integer state; //帳號狀態(是否停權)
 //    private Boolean pass; // 帳號登入狀態
     private String personalInfo; //個人介紹
-    private String avatar;
+//    private String avatar;
     
     
 //    //get/set方法
