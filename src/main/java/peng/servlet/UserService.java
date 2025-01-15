@@ -26,7 +26,7 @@ import peng.javabean.User;
 import util.Result;
 
 
-@Path("/user/login")
+@Path("/user")
 public class UserService {
 	UserDaoImpl userDaoImpl;
 	
@@ -40,6 +40,7 @@ public class UserService {
 	}
 
 	@PUT
+	@Path("/login")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	// 修改user
@@ -99,6 +100,7 @@ public class UserService {
 //	}
 	
 	@POST
+	@Path("/login")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response register(@QueryParam("userNo") String userNo, @QueryParam("password") String password) {
 
@@ -127,6 +129,7 @@ public class UserService {
 	}
 	
 	@GET 
+	@Path("/login")
 	@Produces(MediaType.APPLICATION_JSON) // 輸出資料轉成JSON
 	public Response validate(@QueryParam("userNo") String userNo, @QueryParam("password") String password) {
 		// 列印上傳資訊，除錯用
@@ -135,6 +138,29 @@ public class UserService {
 		
 		try {
 			User user = userDaoImpl.validate(userNo, password);
+			if (user == null) {
+				return Response.status(Response.Status.NOT_FOUND)
+						.entity(new Result(0, "User not found"))
+						.build();
+			}
+			return Response.ok(user).build();
+		} catch (Exception e) {
+			// 處理執行錯誤
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new Result(0, e.getMessage()))
+                    .build();
+		}
+	}
+
+	@GET 
+	@Path("/find")
+	@Produces(MediaType.APPLICATION_JSON) // 輸出資料轉成JSON
+	public Response findUser(@QueryParam("userNo") String userNo) {
+		// 列印上傳資訊，除錯用
+		System.out.println("UserNo: " + userNo);
+		
+		try {
+			User user = userDaoImpl.findUser(userNo);
 			if (user == null) {
 				return Response.status(Response.Status.NOT_FOUND)
 						.entity(new Result(0, "User not found"))

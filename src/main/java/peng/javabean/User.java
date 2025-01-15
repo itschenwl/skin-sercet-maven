@@ -34,7 +34,7 @@ public User(String userNo, String password) {
 }
 public User(
         String userNo, String name, String password,
-        String nickname, String telNumber, Timestamp birthday,
+        String nickname, String telNumber, String birthday,
         Integer sex, String email, String ig, 
         String personalInfo) {
     super();
@@ -60,8 +60,7 @@ public User(
     private String password; // 密碼
     private String nickname; // 暱稱
     private String telNumber; //電話號碼
-    @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss", timezone = "GMT+8")
-    private Timestamp birthday; // 生日
+    private String birthday; // 生日
     private Integer sex; // 性別，1男2女，0都不是(秘密)
 //    private Integer memLevel; //會員等級
     private String email; //信箱
